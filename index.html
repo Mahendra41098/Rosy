@@ -11,9 +11,18 @@
   --bg:#f5f6fa;--bg2:#eef0f8;--bg3:#e8eaf4;--card:#ffffff;--bdr:#dde1f0;
   --acc:#6366f1;--a2:#8b5cf6;--rose:#ec4899;--grn:#10b981;--yel:#f59e0b;
   --red:#ef4444;--cyn:#06b6d4;--txt:#1e1b4b;--t2:#4c4f7c;--t3:#9ca3c4;
-  /* chart palette — editable via settings */
+  /* chart palette */
   --c1:#6366f1;--c2:#ec4899;--c3:#10b981;--c4:#f59e0b;--c5:#06b6d4;
   --c6:#8b5cf6;--c7:#f97316;--c8:#14b8a6;
+  /* data view badge colors — editable */
+  --dv-cat-bg:rgba(129,140,248,.14);--dv-cat-txt:#818cf8;
+  --dv-color-bg:rgba(244,114,182,.12);--dv-color-txt:#ec4899;
+  --dv-brand-bg:rgba(167,139,250,.12);--dv-brand-txt:#a78bfa;
+  --dv-party-bg:rgba(34,211,238,.10);--dv-party-txt:#06b6d4;
+  --dv-ok-bg:rgba(16,185,129,.12);--dv-ok-txt:#10b981;
+  --dv-low-bg:rgba(245,158,11,.12);--dv-low-txt:#f59e0b;
+  --dv-out-bg:rgba(239,68,68,.12);--dv-out-txt:#ef4444;
+  --dv-size-bg:rgba(0,0,0,.06);--dv-size-txt:#4c4f7c;
 }
 [data-dk]{
   --bg:#0c0918;--bg2:#13102280;--bg3:#1c1730;--card:#171228;--bdr:#271e44;
@@ -71,7 +80,14 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
 
 /* ─── BADGES ─────────────────────────────────── */
 .bx{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
-.bcat{background:rgba(129,140,248,.14);color:var(--a2)}.bclr{background:rgba(244,114,182,.12);color:var(--rose)}.bsz{background:rgba(39,30,68,.9);color:var(--t2);border:1px solid var(--bdr)}.bok{background:rgba(52,211,153,.12);color:var(--grn)}.blow{background:rgba(251,191,36,.12);color:var(--yel)}.bout{background:rgba(248,113,113,.12);color:var(--red)}.bpar{background:rgba(34,211,238,.1);color:var(--cyn)}.bbr{background:rgba(167,139,250,.12);color:var(--acc)}
+.bcat{background:var(--dv-cat-bg);color:var(--dv-cat-txt)}
+.bclr{background:var(--dv-color-bg);color:var(--dv-color-txt)}
+.bsz{background:var(--dv-size-bg);color:var(--dv-size-txt);border:1px solid var(--bdr)}
+.bok{background:var(--dv-ok-bg);color:var(--dv-ok-txt)}
+.blow{background:var(--dv-low-bg);color:var(--dv-low-txt)}
+.bout{background:var(--dv-out-bg);color:var(--dv-out-txt)}
+.bpar{background:var(--dv-party-bg);color:var(--dv-party-txt)}
+.bbr{background:var(--dv-brand-bg);color:var(--dv-brand-txt)}
 
 /* ─── TABLE WRAP ─────────────────────────────── */
 .tw{background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:auto}
@@ -219,10 +235,12 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
     <div class="ni" data-pg="srch" onclick="gp(this)"><span class="ic">🔍</span><span class="lb">Search & Filter</span></div>
     <div class="ni" data-pg="pbr" onclick="gp(this)"><span class="ic">🤝</span><span class="lb">Party & Brand View</span></div>
     <div class="ni" data-pg="oos" onclick="gp(this)"><span class="ic">⚠️</span><span class="lb">Out of Stock</span><span class="bd" id="oosBd">0</span></div>
+    <div class="ni" data-pg="order" onclick="gp(this)"><span class="ic">📋</span><span class="lb">Order Generator</span></div>
     <div class="ni" data-pg="soldinstock" onclick="gp(this)"><span class="ic">🔄</span><span class="lb">Sold (In Stock)</span><span class="bd" id="sisBd" style="background:var(--grn)">0</span></div>
     <div class="ns">Sales</div>
     <div class="ni" data-pg="sale" onclick="gp(this)"><span class="ic">🛒</span><span class="lb">New Sale</span></div>
     <div class="ni" data-pg="hist" onclick="gp(this)"><span class="ic">📋</span><span class="lb">Sales History</span></div>
+    <div class="ni" data-pg="expenses" onclick="gp(this)"><span class="ic">💸</span><span class="lb">Expenses</span></div>
     <div class="ni" data-pg="rep" onclick="gp(this)"><span class="ic">📈</span><span class="lb">Reports</span></div>
     <div class="ns">Data</div>
     <div class="ni" data-pg="data" onclick="gp(this)"><span class="ic">📁</span><span class="lb">Import / Export</span></div>
@@ -375,6 +393,81 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
       </div>
     </div>
 
+    <!-- ORDER GENERATOR -->
+    <div class="pg" id="pg-order">
+      <div style="display:grid;grid-template-columns:280px 1fr;gap:16px;height:calc(100vh - 120px)">
+
+        <!-- LEFT: Filters -->
+        <div style="background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:13px;font-weight:700">📋 Order Settings</div>
+
+          <div class="fg" style="margin-bottom:0">
+            <label>Source</label>
+            <select id="ordSrc" onchange="onOrdSrcChange()">
+              <option value="oos">Out of Stock Items</option>
+              <option value="sold">Sold Items (Reorder)</option>
+              <option value="low">Low Stock (≤3)</option>
+            </select>
+          </div>
+
+          <div class="fg" style="margin-bottom:0">
+            <label>Party (Supplier)</label>
+            <select id="ordPar" onchange="onOrdPartyChange()"><option value="">All Parties</option></select>
+          </div>
+
+          <div class="fg" style="margin-bottom:0">
+            <label>Brand</label>
+            <select id="ordBr" onchange="onOrdBrandChange()"><option value="">All Brands</option></select>
+          </div>
+
+          <div class="fg" style="margin-bottom:0">
+            <label>Category</label>
+            <select id="ordCat" onchange="renderOrder()"><option value="">All Categories</option></select>
+          </div>
+
+          <div class="fg" style="margin-bottom:0">
+            <label>Group by</label>
+            <select id="ordGroup" onchange="renderOrder()">
+              <option value="article">Article</option>
+              <option value="category">Category</option>
+              <option value="brand">Brand</option>
+            </select>
+          </div>
+
+          <div class="fg" style="margin-bottom:0">
+            <label>Order Qty (default per item)</label>
+            <input type="number" id="ordQtyDefault" value="1" min="1" oninput="renderOrder()" style="text-align:center">
+          </div>
+
+          <hr style="border:none;border-top:1px solid var(--bdr)">
+
+          <div style="font-size:12px;color:var(--t2);font-weight:600">📦 Order Summary</div>
+          <div id="ordSummary" style="font-size:12px;color:var(--t3);line-height:1.9"></div>
+
+          <div style="display:flex;flex-direction:column;gap:7px;margin-top:auto">
+            <button class="btn bp" onclick="exportOrderExcel()" style="justify-content:center">📊 Export Excel</button>
+            <button class="btn bg" onclick="printOrder()" style="justify-content:center">🖨️ Print / PDF</button>
+            <button class="btn bg" onclick="copyOrderText()" style="justify-content:center">📋 Copy as Text</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: Order Table -->
+        <div style="background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;flex-shrink:0">
+            <span style="font-size:13px;font-weight:700;flex:1">Order List</span>
+            <input id="ordSearch" placeholder="🔍 Search…" oninput="renderOrder()" style="max-width:200px">
+            <button class="btn bg sm" onclick="selectAllOrderItems(true)">☑ All</button>
+            <button class="btn bg sm" onclick="selectAllOrderItems(false)">☐ None</button>
+          </div>
+          <div style="flex:1;overflow-y:auto" id="ordTable">
+            <div class="empty" style="padding:30px"><div style="font-size:32px;margin-bottom:8px">📋</div><p>Select filters to generate order</p></div>
+          </div>
+          <div style="padding:10px 16px;border-top:1px solid var(--bdr);font-size:12px;color:var(--t3)" id="ordFooter"></div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- SOLD IN STOCK -->
     <div class="pg" id="pg-soldinstock">
       <p style="font-size:13px;color:var(--t2);margin-bottom:12px">Items that have been <strong>sold before</strong> (appear in "unit sold" sheet) and still have <strong>current stock available</strong>. Great for reorder decisions.</p>
@@ -433,11 +526,90 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
           </div>
           <div class="fg"><label>Customer Name</label><input id="cName" placeholder="Optional"></div>
           <div class="fg"><label>Customer Phone</label><input id="cPhone" placeholder="Optional"></div>
-          <div class="fg"><label>Payment</label><select id="payMode"><option>Cash</option><option>UPI</option><option>Card</option><option>Credit</option></select></div>
+          <div class="fg">
+            <label>Payment Mode <span style="font-size:9px;color:var(--t3);font-weight:400">(add multiple if split)</span></label>
+            <div id="payRows" style="display:flex;flex-direction:column;gap:6px;margin-bottom:6px">
+              <div class="pay-row" style="display:grid;grid-template-columns:1fr 1fr 24px;gap:6px;align-items:center">
+                <select class="pay-mode-sel" onchange="calcTotal()"><option>Cash</option><option>UPI</option><option>Card</option><option>Credit</option><option>Cheque</option></select>
+                <input type="number" class="pay-amt" placeholder="Amount ₹" min="0" oninput="calcTotal()" style="text-align:right">
+                <button onclick="removePayRow(this)" style="background:none;border:none;font-size:16px;color:var(--red);cursor:pointer;line-height:1" title="Remove">×</button>
+              </div>
+            </div>
+            <button class="btn bg sm" onclick="addPayRow()" style="width:100%;justify-content:center">＋ Add Another Payment Mode</button>
+            <div id="payBalance" style="margin-top:7px;font-size:12px;color:var(--t3);text-align:right"></div>
+          </div>
           <div class="fg"><label>Discount ₹</label><input type="number" id="disc" placeholder="0" min="0" oninput="calcTotal()"></div>
           <div class="fg"><label>Notes</label><textarea id="sNotes" rows="2"></textarea></div>
           <button class="btn bp" style="width:100%;justify-content:center;padding:11px;font-size:14px" onclick="completeSale()">✅ Complete Sale</button>
           <button class="btn bg" style="width:100%;justify-content:center;margin-top:7px" onclick="clearCart()">🗑️ Clear Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPENSES -->
+    <div class="pg" id="pg-expenses">
+      <!-- Top Summary Cards -->
+      <div class="sr" id="expStats" style="margin-bottom:14px"></div>
+
+      <div style="display:grid;grid-template-columns:320px 1fr;gap:16px">
+        <!-- LEFT: Add Expense Form -->
+        <div style="background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;height:fit-content">
+          <div style="font-size:13px;font-weight:700;margin-bottom:14px">➕ Add Expense</div>
+          <div class="fg"><label>Date</label><input type="date" id="expDate"></div>
+          <div class="fg">
+            <label>Category</label>
+            <select id="expCat" onchange="onExpCatChange()">
+              <option value="Shop Expense">🏪 Shop Expense</option>
+              <option value="Light Bill">💡 Light Bill</option>
+              <option value="Staff Salary">👤 Staff Salary</option>
+              <option value="Party Payment">🤝 Party Payment</option>
+              <option value="Partner">🤝 Partner</option>
+              <option value="Rent">🏠 Rent</option>
+              <option value="Transport">🚚 Transport</option>
+              <option value="Other">📦 Other</option>
+            </select>
+          </div>
+          <!-- Staff salary: show staff dropdown -->
+          <div class="fg" id="expStaffRow" style="display:none"><label>Staff Member</label>
+            <select id="expStaff"><option value="">Select staff…</option></select>
+          </div>
+          <!-- Party payment: show party dropdown -->
+          <div class="fg" id="expPartyRow" style="display:none"><label>Party (Supplier)</label>
+            <select id="expParty"><option value="">Select party…</option></select>
+          </div>
+          <!-- Partner: show partner name -->
+          <div class="fg" id="expPartnerRow" style="display:none"><label>Partner Name</label>
+            <input id="expPartner" placeholder="Partner name…">
+          </div>
+          <div class="fg"><label>Description</label><input id="expDesc" placeholder="Details…"></div>
+          <div class="fg"><label>Amount ₹</label><input type="number" id="expAmt" placeholder="0" min="0"></div>
+          <div class="fg">
+            <label>Payment Via</label>
+            <select id="expPayVia"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Cheque</option></select>
+          </div>
+          <div class="fg"><label>Notes</label><textarea id="expNotes" rows="2" placeholder="Optional…"></textarea></div>
+          <button class="btn bp" style="width:100%;justify-content:center" onclick="addExpense()">➕ Add Expense</button>
+        </div>
+
+        <!-- RIGHT: Expense List -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <!-- Filters -->
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <select id="expFilterCat" onchange="renderExpenses()" style="flex:1;min-width:130px"><option value="">All Categories</option></select>
+            <input type="month" id="expFilterMonth" onchange="renderExpenses()" style="flex:1;min-width:130px">
+            <input id="expSearch" placeholder="🔍 Search…" oninput="renderExpenses()" style="flex:2;min-width:140px">
+            <button class="btn bg sm" onclick="clearExpFilters()">✕</button>
+            <button class="btn bg sm" onclick="exportExpenses()">📊 Export</button>
+          </div>
+          <!-- Table -->
+          <div class="tw" style="flex:1">
+            <table>
+              <thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Via</th><th>Amount ₹</th><th>Notes</th><th></th></tr></thead>
+              <tbody id="expTb"></tbody>
+            </table>
+          </div>
+          <!-- Monthly Chart -->
+          <div class="tw" style="padding:14px" id="expChart"></div>
         </div>
       </div>
     </div>
@@ -591,6 +763,14 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
               <div style="display:flex;align-items:center;gap:8px;margin-top:8px;opacity:.5;font-size:12px" id="pvInactive2">🔍 Search</div>
             </div>
           </div>
+        </div>
+
+        <!-- Data View Colors -->
+        <div style="background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">🏷️ Data View Badge Colors</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:14px">Customize colors for Category, Brand, Party, Stock badges shown across inventory tables</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px" id="dvColorGrid"></div>
+          <button class="btn bg sm" style="margin-top:12px" onclick="resetDvColors()">↺ Reset to Default</button>
         </div>
 
         <button class="btn bp" onclick="applySettings();toast('Settings saved!','ok')">💾 Save Settings</button>
@@ -1475,7 +1655,7 @@ function addCart(item){
   toast('Added: '+item.itemName,'ok');
 }
 function rmCart(i){CART.splice(i,1);renderCart();}
-function clearCart(){CART=[];const d=document.getElementById('disc');if(d)d.value='';renderCart();}
+function clearCart(){CART=[];const d=document.getElementById('disc');if(d)d.value='';renderCart();clearPayRows();}
 function updQty(i,v){CART[i].qty=Math.max(1,Math.min(CART[i].stock,parseInt(v)||1));renderCart();}
 function renderCart(){
   const el=document.getElementById('cartRows');if(!el)return;
@@ -1492,13 +1672,20 @@ function calcTotal(){
 function completeSale(){
   if(!CART.length){toast('Cart is empty!','err');return;}
   const{sub,disc,tot}=calcTotal();
-  const sale={id:'S'+Date.now(),date:new Date().toISOString(),staff:gv('staffName'),customer:gv('cName'),phone:gv('cPhone'),payment:gv('payMode'),notes:gv('sNotes'),items:CART.map(i=>({itemName:i.itemName,category:i.category,color:i.color,size:i.size,qty:i.qty,price:i.salePrice})),sub,disc,total:tot};
+  const payments=getPayments();
+  const paidTotal=payments.reduce((s,p)=>s+p.amt,0);
+  // If amounts entered but don't cover total, warn
+  if(payments.length && paidTotal < tot-0.01){
+    if(!confirm('Total is ₹'+tot.toFixed(0)+' but paid amount is ₹'+paidTotal.toFixed(0)+'. Complete sale anyway?')) return;
+  }
+  const payStr=payments.length ? getPaymentSummary() : (document.querySelector('.pay-mode-sel')?.value||'Cash');
+  const sale={id:'S'+Date.now(),date:new Date().toISOString(),staff:gv('staffName'),customer:gv('cName'),phone:gv('cPhone'),payments:payments.length?payments:[{mode:payStr,amt:tot}],payment:payStr,notes:gv('sNotes'),items:CART.map(i=>({itemName:i.itemName,category:i.category,color:i.color,size:i.size,qty:i.qty,price:i.salePrice})),sub,disc,total:tot};
   CART.forEach(ci=>{const m=DB.master.find(i=>i.itemName===ci.itemName);if(m)m.stock=Math.max(0,m.stock-ci.qty);});
-  DB.sales.push(sale);saveDB();showReceipt(sale);clearCart();toast('Sale complete! ✅','ok');refreshAll();
+  DB.sales.push(sale);saveDB();showReceipt(sale);clearCart();clearPayRows();toast('Sale complete! ✅','ok');refreshAll();
 }
 function showReceipt(sale){
   const sn=CFG.storeName||'ROSY';const sf=CFG.storeFtr||'Thank you!';
-  document.getElementById('mRB').innerHTML=`<div class="rec"><div class="rh"><strong style="font-size:16px">${sn}</strong><br><span style="font-size:11px">${sale.id} · ${new Date(sale.date).toLocaleString('en-IN')}</span></div>${sale.staff?`<div>Staff: <strong>${sale.staff}</strong></div>`:''  }${sale.customer?`<div>Customer: ${sale.customer}${sale.phone?' · '+sale.phone:''}</div>`:''}<hr class="rdiv">${sale.items.map(i=>`<div class="rl"><span>${i.itemName} ×${i.qty}</span><span>₹${(i.price*i.qty).toFixed(0)}</span></div>`).join('')}<hr class="rdiv"><div class="rl"><span>Subtotal</span><span>₹${sale.sub.toFixed(0)}</span></div>${sale.disc>0?`<div class="rl" style="color:var(--grn)"><span>Discount</span><span>-₹${sale.disc.toFixed(0)}</span></div>`:''}<div class="rl" style="font-size:15px;font-weight:700;margin-top:5px"><span>TOTAL</span><span>₹${sale.total.toFixed(0)}</span></div><div style="text-align:center;margin-top:8px;font-size:11px;color:var(--t3)">Payment: ${sale.payment} · ${sf} 🙏</div></div>`;
+  document.getElementById('mRB').innerHTML=`<div class="rec"><div class="rh"><strong style="font-size:16px">${sn}</strong><br><span style="font-size:11px">${sale.id} · ${new Date(sale.date).toLocaleString('en-IN')}</span></div>${sale.staff?`<div>Staff: <strong>${sale.staff}</strong></div>`:''  }${sale.customer?`<div>Customer: ${sale.customer}${sale.phone?' · '+sale.phone:''}</div>`:''}<hr class="rdiv">${sale.items.map(i=>`<div class="rl"><span>${i.itemName} ×${i.qty}</span><span>₹${(i.price*i.qty).toFixed(0)}</span></div>`).join('')}<hr class="rdiv"><div class="rl"><span>Subtotal</span><span>₹${sale.sub.toFixed(0)}</span></div>${sale.disc>0?`<div class="rl" style="color:var(--grn)"><span>Discount</span><span>-₹${sale.disc.toFixed(0)}</span></div>`:''}<div class="rl" style="font-size:15px;font-weight:700;margin-top:5px"><span>TOTAL</span><span>₹${sale.total.toFixed(0)}</span></div><div style="text-align:center;margin-top:8px;font-size:11px;color:var(--t3)">${sale.payments&&sale.payments.length>1?sale.payments.map(p=>`<div class="rl"><span>${p.mode}</span><span>₹${p.amt.toFixed(0)}</span></div>`).join(''):''}<div style="text-align:center;margin-top:8px;font-size:11px;color:var(--t3)">Payment: ${sale.payment} · ${sf} 🙏</div></div>`;
   openM('mRec');
 }
 
@@ -1539,7 +1726,7 @@ function renderRep(){
 
 /* ─── EXPORT ────────────────────────────────── */
 function expMaster(){if(!DB.master.length){toast('No data','err');return;}xlDl(DB.master.map(i=>({'D.no':i.dno,'Item Name':i.itemName,'Category':i.category,'Article':i.article,'Color':i.color,'Size':i.size,'Brand':i.brand,'Party No.':i.partyNo,'Sale Price':i.salePrice,'MRP':i.mrp,'Rate':i.rate,'Cost/pc ₹':i.costPer,'Stock':i.stock,'Raw Code':i.rawCode})),'ROSY_Inventory');}
-function expSales(){if(!DB.sales.length){toast('No sales','err');return;}const r=[];DB.sales.forEach(s=>(s.items||[]).forEach(i=>r.push({'Sale ID':s.id,'Date':new Date(s.date).toLocaleString('en-IN'),'Staff':s.staff||'','Customer':s.customer||'','Item':i.itemName,'Color':i.color,'Size':i.size,'Qty':i.qty,'Price':i.price,'Total':i.price*i.qty,'Payment':s.payment,'Sale Total':s.total})));xlDl(r,'ROSY_Sales');}
+function expSales(){if(!DB.sales.length){toast('No sales','err');return;}const r=[];DB.sales.forEach(s=>(s.items||[]).forEach(i=>r.push({'Sale ID':s.id,'Date':new Date(s.date).toLocaleString('en-IN'),'Staff':s.staff||'','Customer':s.customer||'','Item':i.itemName,'Color':i.color,'Size':i.size,'Qty':i.qty,'Price':i.price,'Total':i.price*i.qty,'Payment':s.payment,'Payment Breakdown':s.payments?s.payments.map(p=>p.mode+' ₹'+p.amt).join(' + '):s.payment,'Sale Total':s.total})));xlDl(r,'ROSY_Sales');}
 function expOOS(){xlDl(DB.master.filter(i=>i.stock<=0).map(i=>({'D.no':i.dno,'Item Name':i.itemName,'Category':i.category,'Brand':i.brand,'Party':i.partyNo,'Cost/pc ₹':i.costPer})),'ROSY_OOS');}
 function xlDl(rows,name){const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),name.replace('ROSY_','').slice(0,31));XLSX.writeFile(wb,name+'_'+new Date().toISOString().split('T')[0]+'.xlsx');toast('Exported!','ok');}
 function backupJ(){const b=new Blob([JSON.stringify({...DB,images:{}},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ROSY_Backup_'+new Date().toISOString().split('T')[0]+'.json';a.click();toast('Backup downloaded','ok');}
@@ -1547,7 +1734,7 @@ function restoreJ(e){const f=e.target.files[0];if(!f)return;const r=new FileRead
 function updateDInfo(){document.getElementById('dInfo').innerHTML=`📦 ${DB.master.length.toLocaleString()} products &nbsp;·&nbsp; ⚠️ ${DB.oos.length} OOS &nbsp;·&nbsp; 💰 ${DB.sold.length} sold records &nbsp;·&nbsp; 🛒 ${DB.sales.length} app sales<br>${DB.lastImport?'🕐 Last import: '+new Date(DB.lastImport).toLocaleString('en-IN'):'No import yet'}`;}
 
 /* ─── NAV ───────────────────────────────────── */
-const TITLES={dash:'Dashboard',prod:'All Products',srch:'Search & Filter',pbr:'Party & Brand View',oos:'Out of Stock',soldinstock:'Sold Items (In Stock)',sale:'New Sale',hist:'Sales History',rep:'Reports',data:'Import / Export',imgs:'Product Images',settings:'Settings'};
+const TITLES={dash:'Dashboard',prod:'All Products',srch:'Search & Filter',pbr:'Party & Brand View',oos:'Out of Stock',soldinstock:'Sold Items (In Stock)',order:'Order Generator',sale:'New Sale',expenses:'Expenses',hist:'Sales History',rep:'Reports',data:'Import / Export',imgs:'Product Images',settings:'Settings'};
 function gp(el){
   const id=el.dataset.pg;
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('A'));
@@ -1788,7 +1975,7 @@ const ACCENT_PRESETS=[
   {name:'Red',      val:'#ef4444'},
 ];
 const DEFAULT_CHART_COLORS=['#6366f1','#ec4899','#10b981','#f59e0b','#06b6d4','#8b5cf6','#f97316','#14b8a6'];
-let CFG={theme:'light',accent:'#6366f1',chartColors:[...DEFAULT_CHART_COLORS],storeName:'ROSY',storePhone:'',storeAddr:'',storeFtr:'Thank you!',staff:[],panelBg:'',panelText:'',panelActiveBg:'',panelActiveText:''};
+let CFG={theme:'light',accent:'#6366f1',chartColors:[...DEFAULT_CHART_COLORS],storeName:'ROSY',storePhone:'',storeAddr:'',storeFtr:'Thank you!',staff:[],panelBg:'',panelText:'',panelActiveBg:'',panelActiveText:'',dvColors:{}};
 
 function loadSettings(){
   try{const s=localStorage.getItem('rosyCFG');if(s)CFG={...CFG,...JSON.parse(s)};}catch(e){}
@@ -1993,6 +2180,337 @@ function resetPanelColor(){
   if(dynStyle)dynStyle.textContent='';
   updatePanelPreview();
   toast('Panel color reset','ok');
+}
+
+/* ═══════════════════════════════════════════════
+   MULTI-PAYMENT
+═══════════════════════════════════════════════ */
+function addPayRow(){
+  const container=document.getElementById('payRows');
+  if(!container) return;
+  const row=document.createElement('div');
+  row.className='pay-row';
+  row.style.cssText='display:grid;grid-template-columns:1fr 1fr 24px;gap:6px;align-items:center';
+  row.innerHTML=`<select class="pay-mode-sel" onchange="calcTotal()"><option>Cash</option><option>UPI</option><option>Card</option><option>Credit</option><option>Cheque</option></select><input type="number" class="pay-amt" placeholder="Amount ₹" min="0" oninput="calcTotal()" style="text-align:right"><button onclick="removePayRow(this)" style="background:none;border:none;font-size:16px;color:var(--red);cursor:pointer;line-height:1" title="Remove">×</button>`;
+  container.appendChild(row);
+  calcTotal();
+}
+function removePayRow(btn){
+  const rows=document.querySelectorAll('#payRows .pay-row');
+  if(rows.length<=1){toast('Need at least one payment mode','err');return;}
+  btn.closest('.pay-row').remove();
+  calcTotal();
+}
+function getPayments(){
+  const rows=document.querySelectorAll('#payRows .pay-row');
+  const payments=[];
+  rows.forEach(row=>{
+    const mode=row.querySelector('.pay-mode-sel')?.value||'Cash';
+    const amt=parseFloat(row.querySelector('.pay-amt')?.value)||0;
+    if(amt>0) payments.push({mode,amt});
+  });
+  return payments;
+}
+function getPaymentSummary(){
+  // Returns display string like "Cash ₹200 + UPI ₹150"
+  const pays=getPayments();
+  if(!pays.length) return 'Cash';
+  return pays.map(p=>`${p.mode} ₹${p.amt.toFixed(0)}`).join(' + ');
+}
+function calcTotal(){
+  const sub=CART.reduce((s,i)=>s+i.salePrice*i.qty,0);
+  const disc=parseFloat(gv('disc'))||0;
+  const tot=Math.max(0,sub-disc);
+  const el=document.getElementById('ctbar');if(el)el.textContent='₹ '+tot.toFixed(2);
+  // Show payment balance
+  const paidTotal=getPayments().reduce((s,p)=>s+p.amt,0);
+  const bal=tot-paidTotal;
+  const balEl=document.getElementById('payBalance');
+  if(balEl){
+    if(paidTotal===0) balEl.textContent='';
+    else if(bal>0.01) balEl.innerHTML=`<span style="color:var(--red)">Balance pending: ₹${bal.toFixed(0)}</span>`;
+    else if(bal<-0.01) balEl.innerHTML=`<span style="color:var(--grn)">Change to return: ₹${Math.abs(bal).toFixed(0)}</span>`;
+    else balEl.innerHTML=`<span style="color:var(--grn)">✓ Fully paid</span>`;
+  }
+  return{sub,disc,tot};
+}
+function clearPayRows(){
+  // Reset to single row
+  const c=document.getElementById('payRows');
+  if(!c) return;
+  c.innerHTML=`<div class="pay-row" style="display:grid;grid-template-columns:1fr 1fr 24px;gap:6px;align-items:center">
+    <select class="pay-mode-sel" onchange="calcTotal()"><option>Cash</option><option>UPI</option><option>Card</option><option>Credit</option><option>Cheque</option></select>
+    <input type="number" class="pay-amt" placeholder="Amount ₹" min="0" oninput="calcTotal()" style="text-align:right">
+    <button onclick="removePayRow(this)" style="background:none;border:none;font-size:16px;color:var(--red);cursor:pointer;line-height:1">×</button>
+  </div>`;
+  const bal=document.getElementById('payBalance');if(bal)bal.textContent='';
+}
+
+/* ═══════════════════════════════════════════════
+   ORDER GENERATOR
+═══════════════════════════════════════════════ */
+let _ordItems={}; // { itemName: { item, qty, selected } }
+
+function initOrderFilters(){
+  const parties=[...new Set(DB.master.map(i=>i.partyNo).filter(Boolean))].sort((a,b)=>+a-+b);
+  const s=document.getElementById('ordPar');
+  if(s&&s.options.length<=1) parties.forEach(v=>s.add(new Option('Party '+v,v)));
+  rebuildSelect('ordBr',  getBrandsFor(''),  'All Brands');
+  rebuildSelect('ordCat', getCatsFor('',''), 'All Categories');
+}
+function onOrdSrcChange(){renderOrder();}
+function onOrdPartyChange(){
+  const p=gv('ordPar');
+  rebuildSelect('ordBr',  getBrandsFor(p),   'All Brands');
+  rebuildSelect('ordCat', getCatsFor(p,''),   'All Categories');
+  renderOrder();
+}
+function onOrdBrandChange(){
+  rebuildSelect('ordCat', getCatsFor(gv('ordPar'),gv('ordBr')), 'All Categories');
+  renderOrder();
+}
+
+function getOrderSourceItems(){
+  const src=gv('ordSrc'), par=gv('ordPar'), br=gv('ordBr'), cat=gv('ordCat');
+  let items=DB.master.filter(i=>{
+    if(par&&i.partyNo!==par) return false;
+    if(br&&i.brand!==br)     return false;
+    if(cat&&i.category!==cat) return false;
+    if(src==='oos')  return i.stock<=0;
+    if(src==='low')  return i.stock>0&&i.stock<=3;
+    if(src==='sold'){
+      const soldMap=Object.fromEntries(DB.sold.map(s=>[s.itemName,s.salesQty]));
+      return soldMap[i.itemName]>0 && i.stock<=3;
+    }
+    return true;
+  });
+  return items;
+}
+
+function renderOrder(){
+  const q=gv('ordSearch').toLowerCase();
+  const groupBy=gv('ordGroup');
+  const defQty=parseInt(gv('ordQtyDefault'))||1;
+  let items=getOrderSourceItems().filter(i=>!q||i.itemName.toLowerCase().includes(q)||i.article.toLowerCase().includes(q)||i.brand.toLowerCase().includes(q));
+
+  // Maintain selection state
+  const prevState={..._ordItems};
+  _ordItems={};
+  items.forEach(i=>{
+    const prev=prevState[i.itemName];
+    _ordItems[i.itemName]={
+      item:i,
+      qty:prev?prev.qty:defQty,
+      selected:prev?prev.selected:true
+    };
+  });
+
+  if(!items.length){
+    document.getElementById('ordTable').innerHTML='<div class="empty" style="padding:30px"><div style="font-size:32px;margin-bottom:8px">📭</div><p>No items match the filters</p></div>';
+    document.getElementById('ordSummary').textContent='0 items';
+    document.getElementById('ordFooter').textContent='';
+    return;
+  }
+
+  // Group items
+  const groups={};
+  items.forEach(i=>{
+    const key = groupBy==='article'?i.article:groupBy==='category'?i.category:i.brand;
+    if(!groups[key]) groups[key]=[];
+    groups[key].push(i);
+  });
+
+  const soldMap=Object.fromEntries(DB.sold.map(s=>[s.itemName,s.salesQty]));
+  let html='<table style="width:100%;border-collapse:collapse">';
+  html+=`<thead><tr>
+    <th style="padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0">☑</th>
+    <th style="padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0">Item Name</th>
+    <th style="padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0">Color</th>
+    <th style="padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0">Size</th>
+    <th style="padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0">Cur. Stock</th>
+    <th style="padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0">Sold</th>
+    <th style="padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0">Order Qty</th>
+    <th style="padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0">Cost/pc ₹</th>
+  </tr></thead><tbody>`;
+
+  Object.entries(groups).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([grpKey,grpItems])=>{
+    // Group header row
+    html+=`<tr><td colspan="8" style="padding:7px 10px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--acc);border-bottom:1px solid var(--bdr)">
+      ${groupBy==='article'?'📦':groupBy==='category'?'📁':'🏷️'} ${grpKey}
+      <span style="font-size:10px;color:var(--t3);font-weight:400;margin-left:8px">${grpItems.length} variants</span>
+    </td></tr>`;
+    grpItems.forEach(i=>{
+      const state=_ordItems[i.itemName];
+      const sq=soldMap[i.itemName]||0;
+      const checked=state?.selected;
+      html+=`<tr style="border-bottom:1px solid rgba(0,0,0,.04)" onmouseover="this.style.background='rgba(99,102,241,.04)'" onmouseout="this.style.background=''">
+        <td style="padding:7px 10px;text-align:center"><input type="checkbox" ${checked?'checked':''} onchange="_ordItems['${esc(i.itemName)}'].selected=this.checked;updateOrdSummary()" style="width:auto;accent-color:var(--acc)"></td>
+        <td style="padding:7px 10px;font-size:12px"><strong>${i.itemName}</strong></td>
+        <td style="padding:7px 10px">${cswDot(i.color)}<span style="font-size:11px">${i.color}</span></td>
+        <td style="padding:7px 10px"><span class="bx bsz" style="font-size:10px">${i.size}</span></td>
+        <td style="padding:7px 10px;text-align:center"><strong class="${i.stock<=0?'cr':i.stock<=3?'cy':'cg'}">${i.stock}</strong></td>
+        <td style="padding:7px 10px;text-align:center;color:var(--acc);font-weight:700">${sq||'—'}</td>
+        <td style="padding:7px 10px"><input type="number" min="1" value="${state?.qty||defQty}" onchange="_ordItems['${esc(i.itemName)}'].qty=Math.max(1,parseInt(this.value)||1);updateOrdSummary()" style="width:70px;text-align:center;padding:4px 8px;font-size:12px"></td>
+        <td style="padding:7px 10px;color:var(--acc);font-size:12px">₹${i.costPer}</td>
+      </tr>`;
+    });
+  });
+  html+='</tbody></table>';
+  document.getElementById('ordTable').innerHTML=html;
+  updateOrdSummary();
+}
+
+function updateOrdSummary(){
+  const selected=Object.values(_ordItems).filter(o=>o.selected);
+  const totalQty=selected.reduce((s,o)=>s+o.qty,0);
+  const totalCost=selected.reduce((s,o)=>s+o.qty*o.item.costPer,0);
+  const parties=[...new Set(selected.map(o=>o.item.partyNo).filter(Boolean))];
+  const brands=[...new Set(selected.map(o=>o.item.brand).filter(Boolean))];
+  document.getElementById('ordSummary').innerHTML=`
+    <div>Items selected: <strong>${selected.length}</strong></div>
+    <div>Total qty to order: <strong>${totalQty}</strong></div>
+    <div>Est. cost: <strong>₹${Math.round(totalCost).toLocaleString()}</strong></div>
+    <div>Parties: <strong>${parties.length}</strong> (${parties.map(p=>'P-'+p).join(', ')})</div>
+    <div>Brands: <strong>${brands.length}</strong></div>
+  `;
+  document.getElementById('ordFooter').textContent=`${selected.length} items selected · ${totalQty} pcs · Est. ₹${Math.round(totalCost).toLocaleString()}`;
+}
+
+function selectAllOrderItems(val){
+  Object.values(_ordItems).forEach(o=>o.selected=val);
+  renderOrder();
+}
+
+function getSelectedOrderRows(){
+  return Object.values(_ordItems).filter(o=>o.selected).map(o=>({
+    'Party':     'Party '+o.item.partyNo,
+    'Brand':     o.item.brand,
+    'Category':  o.item.category,
+    'Article':   o.item.article,
+    'Item Name': o.item.itemName,
+    'Color':     o.item.color,
+    'Size':      o.item.size,
+    'D.no':      o.item.dno,
+    'Cur. Stock':o.item.stock,
+    'Sold Qty':  (DB.sold.find(s=>s.itemName===o.item.itemName)?.salesQty)||0,
+    'Order Qty': o.qty,
+    'Cost/pc ₹': o.item.costPer,
+    'Total Cost ₹': Math.round(o.qty*o.item.costPer),
+    'Sale Price ₹': o.item.salePrice,
+    'MRP ₹':    o.item.mrp,
+    'Raw Code':  o.item.rawCode
+  }));
+}
+
+function exportOrderExcel(){
+  const rows=getSelectedOrderRows();
+  if(!rows.length){toast('Nothing selected','err');return;}
+  // Group by party for separate sheets
+  const byParty={};
+  rows.forEach(r=>{
+    if(!byParty[r.Party])byParty[r.Party]=[];
+    byParty[r.Party].push(r);
+  });
+  const wb=XLSX.utils.book_new();
+  // Summary sheet
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'All Items');
+  // Per-party sheets
+  Object.entries(byParty).forEach(([party,partyRows])=>{
+    const shName=party.replace(/[\/\?*\[\]:]/g,'').slice(0,31);
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(partyRows), shName);
+  });
+  const src=gv('ordSrc');
+  const srcLabel=src==='oos'?'OOS':src==='sold'?'Reorder':'LowStock';
+  XLSX.writeFile(wb,'ROSY_Order_'+srcLabel+'_'+new Date().toISOString().split('T')[0]+'.xlsx');
+  toast('Order exported!','ok');
+}
+
+function copyOrderText(){
+  const rows=getSelectedOrderRows();
+  if(!rows.length){toast('Nothing selected','err');return;}
+  // Group by party → brand
+  const tree={};
+  rows.forEach(r=>{
+    const p=r.Party,b=r.Brand;
+    if(!tree[p])tree[p]={};
+    if(!tree[p][b])tree[p][b]=[];
+    tree[p][b].push(r);
+  });
+  let text=`ORDER — ${new Date().toLocaleDateString('en-IN')}
+${'═'.repeat(40)}
+`;
+  Object.entries(tree).forEach(([party,brands])=>{
+    text+=`
+▶ ${party}
+`;
+    Object.entries(brands).forEach(([brand,items])=>{
+      text+=`  ◆ ${brand}
+`;
+      items.forEach(i=>{ text+=`    ${i['Item Name'].padEnd(32)}  Qty: ${i['Order Qty']}  Cost: ₹${i['Cost/pc ₹']}
+`; });
+    });
+    const subtotal=Object.values(brands).flat().reduce((s,i)=>s+i['Total Cost ₹'],0);
+    text+=`  Subtotal: ₹${subtotal.toLocaleString()}
+`;
+  });
+  const grand=rows.reduce((s,r)=>s+r['Total Cost ₹'],0);
+  text+=`
+${'═'.repeat(40)}
+GRAND TOTAL: ₹${grand.toLocaleString()}
+Items: ${rows.length}  ·  Qty: ${rows.reduce((s,r)=>s+r['Order Qty'],0)}
+`;
+  navigator.clipboard.writeText(text).then(()=>toast('Copied to clipboard!','ok')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Copied!','ok');
+  });
+}
+
+function printOrder(){
+  const rows=getSelectedOrderRows();
+  if(!rows.length){toast('Nothing selected','err');return;}
+  const tree={};
+  rows.forEach(r=>{
+    const p=r.Party,b=r.Brand;
+    if(!tree[p])tree[p]={};
+    if(!tree[p][b])tree[p][b]=[];
+    tree[p][b].push(r);
+  });
+  const sn=CFG.storeName||'ROSY';
+  const src=gv('ordSrc');
+  const srcLabel=src==='oos'?'Out of Stock Order':src==='sold'?'Reorder (Sold Items)':'Low Stock Order';
+  const grand=rows.reduce((s,r)=>s+r['Total Cost ₹'],0);
+  let html=`<html><head><title>Order - ${sn}</title><style>
+    body{font-family:'Segoe UI',sans-serif;font-size:12px;color:#1e1b4b;margin:24px}
+    h1{font-size:18px;margin-bottom:4px} .sub{font-size:12px;color:#666;margin-bottom:16px}
+    .party{margin-bottom:16px;page-break-inside:avoid}
+    .party-hdr{background:#e0e7ff;padding:7px 10px;border-radius:6px;font-weight:700;font-size:13px;margin-bottom:6px}
+    .brand-hdr{font-weight:700;font-size:12px;color:#4338ca;margin:8px 0 4px 10px}
+    table{width:100%;border-collapse:collapse;margin-bottom:8px}
+    th{background:#f1f5f9;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:5px 8px;text-align:left;border-bottom:1px solid #cbd5e1}
+    td{padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:11px}
+    .total{text-align:right;font-weight:700;font-size:12px;padding:6px 8px;color:#4338ca}
+    .grand{font-size:14px;font-weight:800;padding:10px;background:#e0e7ff;border-radius:6px;text-align:right;margin-top:12px}
+    @media print{body{margin:12px}}
+  </style></head><body>
+  <h1>🌹 ${sn} — ${srcLabel}</h1>
+  <div class="sub">Date: ${new Date().toLocaleDateString('en-IN')} · Items: ${rows.length} · Total Qty: ${rows.reduce((s,r)=>s+r['Order Qty'],0)}</div>`;
+
+  Object.entries(tree).forEach(([party,brands])=>{
+    const pTotal=Object.values(brands).flat().reduce((s,i)=>s+i['Total Cost ₹'],0);
+    html+=`<div class="party"><div class="party-hdr">${party} — Est. ₹${pTotal.toLocaleString()}</div>`;
+    Object.entries(brands).forEach(([brand,items])=>{
+      const bTotal=items.reduce((s,i)=>s+i['Total Cost ₹'],0);
+      html+=`<div class="brand-hdr">${brand} (${items.length} items · ₹${bTotal.toLocaleString()})</div>
+      <table><thead><tr><th>Item Name</th><th>Color</th><th>Size</th><th>Stock</th><th>Sold</th><th>Ord Qty</th><th>Cost/pc</th><th>Total</th></tr></thead><tbody>
+      ${items.map(i=>`<tr><td><strong>${i['Item Name']}</strong></td><td>${i.Color}</td><td>${i.Size}</td><td style="color:${i['Cur. Stock']<=0?'#ef4444':i['Cur. Stock']<=3?'#f59e0b':'#10b981'}">${i['Cur. Stock']}</td><td>${i['Sold Qty']||'—'}</td><td style="font-weight:700">${i['Order Qty']}</td><td>₹${i['Cost/pc ₹']}</td><td>₹${i['Total Cost ₹']}</td></tr>`).join('')}
+      </tbody></table>`;
+    });
+    html+=`</div>`;
+  });
+  html+=`<div class="grand">GRAND TOTAL: ₹${grand.toLocaleString()}</div></body></html>`;
+  const w=window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(()=>w.print(),400);
 }
 
 /* ─── INIT ──────────────────────────────────── */
