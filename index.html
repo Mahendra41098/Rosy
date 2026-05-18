@@ -132,12 +132,30 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
 .cn{font-size:13px;font-weight:700;flex:1}
 .cst{font-size:11px;color:var(--t3)}
 .sg{display:flex;gap:5px;flex-wrap:wrap}
-.sp{padding:5px 10px;border-radius:7px;font-size:12px;font-weight:700;text-align:center;min-width:36px;position:relative;display:inline-block}
-.sp.in{background:rgba(52,211,153,.13);border:1px solid rgba(52,211,153,.4);color:var(--grn)}
-.sp.out{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.2);color:var(--red);text-decoration:line-through;opacity:.55}
-.sp .qty{display:block;font-size:9px;font-weight:400;opacity:.75}
-.sp .acb{margin-top:3px;font-size:10px;padding:2px 6px;border-radius:5px;width:100%;background:rgba(52,211,153,.2);color:var(--grn);border:none;font-family:inherit;font-weight:700}
+.sp{padding:7px 10px;border-radius:9px;font-size:12px;font-weight:700;text-align:center;min-width:48px;position:relative;display:inline-block;transition:all .15s}
+.sp.in{background:rgba(52,211,153,.13);border:1.5px solid rgba(52,211,153,.5);color:var(--grn)}
+.sp.in:hover{background:rgba(52,211,153,.22);transform:translateY(-1px)}
+.sp.out{background:rgba(248,113,113,.08);border:1.5px solid rgba(248,113,113,.35);color:var(--red);opacity:.85}
+.sp.out:hover{background:rgba(248,113,113,.16);opacity:1;transform:translateY(-1px)}
+.sp .qty{display:block;font-size:9px;font-weight:400;opacity:.8;margin:1px 0 2px}
+.sp .acb{margin-top:3px;font-size:10px;padding:3px 6px;border-radius:5px;width:100%;background:rgba(52,211,153,.2);color:var(--grn);border:none;font-family:inherit;font-weight:700;cursor:pointer}
+.sp .acb:hover{background:rgba(52,211,153,.35)}
 
+/* ─── ORDER CART PANEL ─────────────────────── */
+#orderCartPanel{position:fixed;right:0;top:0;height:100vh;width:340px;background:var(--card);border-left:1px solid var(--bdr);z-index:150;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 24px rgba(0,0,0,.2)}
+#orderCartPanel.open{transform:translateX(0)}
+.ocp-header{padding:14px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ocp-header h3{flex:1;font-size:14px;font-weight:700}
+.ocp-body{flex:1;overflow-y:auto;padding:10px 14px}
+.ocp-footer{padding:12px 14px;border-top:1px solid var(--bdr);flex-shrink:0}
+.ocr{display:grid;grid-template-columns:1fr 68px 22px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid var(--bdr)}
+.ocp-badge{position:fixed;right:16px;bottom:80px;z-index:140;background:linear-gradient(135deg,var(--acc),var(--a2));color:#fff;border-radius:50px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(99,102,241,.4);display:none;align-items:center;gap:8px;transition:all .2s}
+.ocp-badge:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(99,102,241,.5)}
+.sp .szlbl{font-size:13px;font-weight:800;display:block}
+.sp .aob{margin-top:4px;font-size:10px;padding:3px 6px;border-radius:5px;width:100%;background:rgba(99,102,241,.18);color:var(--acc);border:1px solid rgba(99,102,241,.3);font-family:inherit;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.sp .aob:hover{background:rgba(99,102,241,.35)}
+.sp.out .aob{background:rgba(239,68,68,.12);color:var(--red);border-color:rgba(239,68,68,.3)}
+.sp.out .aob:hover{background:rgba(239,68,68,.25)}
 /* ─── CART ─────────────────────────────────── */
 .crow{display:grid;grid-template-columns:1fr 78px 78px 24px;gap:7px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bdr)}
 .ctbar{text-align:right;padding:11px 0;font-size:21px;font-weight:800;color:var(--acc)}
@@ -146,8 +164,18 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
 .sdr:hover{background:var(--bg3)}
 
 /* ─── PARTY BROWSER ─────────────────────────── */
-.party-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-bottom:14px}
-.party-chip{background:var(--bg3);border:1.5px solid var(--bdr);border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .18s}
+.party-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.party-chip{background:var(--card);border:1.5px solid var(--bdr);border-radius:12px;padding:13px 14px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden}
+.party-chip:hover{border-color:var(--acc);box-shadow:0 4px 16px rgba(99,102,241,.15);transform:translateY(-1px)}
+.party-chip .pc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.party-chip .pc-num{font-size:16px;font-weight:800;color:var(--acc)}
+.party-chip .pc-brands{font-size:11px;color:var(--t3)}
+.party-chip .pc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.party-chip .pc-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.3px}
+.party-chip .pc-val{font-size:12px;font-weight:700}
+.party-chip .pc-divider{border:none;border-top:1px solid var(--bdr);margin:8px 0}
+.party-chip .pc-bar{height:4px;border-radius:3px;background:var(--bg3);overflow:hidden;margin-top:6px}
+.party-chip .pc-bar-fill{height:100%;border-radius:3px;background:var(--grn);transition:width .4s}
 .party-chip:hover,.party-chip.sel{background:rgba(167,139,250,.15);border-color:var(--acc)}
 .party-chip.sel{border-color:var(--acc);box-shadow:0 0 0 2px rgba(167,139,250,.2)}
 .party-chip .pn{font-size:13px;font-weight:800;color:var(--acc)}
@@ -224,6 +252,27 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
 </style>
 </head>
 <body>
+
+<!-- ═══ LOGIN SCREEN ═══ -->
+<div id="loginScreen" style="position:fixed;inset:0;background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#0f0a1e 100%);z-index:9999;display:flex;align-items:center;justify-content:center">
+  <div style="background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:40px 36px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+    <div style="font-size:48px;margin-bottom:8px">🌹</div>
+    <div style="font-size:22px;font-weight:800;color:#fff;letter-spacing:1px;margin-bottom:4px">ROSY</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:30px;letter-spacing:2px;text-transform:uppercase">Inventory Manager</div>
+    <div style="position:relative;margin-bottom:16px">
+      <input id="loginPwd" type="password" placeholder="Enter password…" autocomplete="current-password"
+        style="width:100%;box-sizing:border-box;padding:13px 44px 13px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-family:inherit;outline:none;transition:border .2s"
+        onkeydown="if(event.key==='Enter')tryLogin()"
+        onfocus="this.style.borderColor='rgba(167,139,250,.7)'"
+        onblur="this.style.borderColor='rgba(255,255,255,.15)'">
+      <button onclick="toggleLoginPwd()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:16px" id="loginEyeBtn">👁</button>
+    </div>
+    <div id="loginErr" style="color:#f87171;font-size:12px;margin-bottom:12px;min-height:18px"></div>
+    <button onclick="tryLogin()" style="width:100%;padding:13px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s;letter-spacing:.5px"
+      onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Unlock →</button>
+    <div style="margin-top:20px;font-size:11px;color:rgba(255,255,255,.25)">ROSY Inventory v2.0</div>
+  </div>
+</div>
 
 <div class="sbdrop" id="sbdrop" onclick="closeSB()"></div>
 
@@ -354,7 +403,7 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
       </div>
       <div class="ri" id="sInfo"></div>
       <div class="tw">
-        <table><thead><tr><th>D.no</th><th>Item Name</th><th>Category</th><th>Article</th><th>Color</th><th>Size</th><th>Brand</th><th>Party</th><th>Stock</th><th>Sale ₹</th><th>Cost ₹</th><th>MRP ₹</th></tr></thead>
+        <table><thead><tr><th>D.no</th><th>Item Name</th><th>Category</th><th>Article</th><th>Color</th><th>Size</th><th>Brand</th><th>Party</th><th>Stock</th><th>Sale ₹</th><th>Cost ₹</th><th>MRP ₹</th><th>Order</th></tr></thead>
         <tbody id="sTb"></tbody></table>
       </div>
     </div>
@@ -367,13 +416,17 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
         <div class="sr2" style="margin-bottom:12px">
           <input id="partySearchQ" placeholder="🔍  Search party or brand…" oninput="renderPartyGrid()">
         </div>
+        <div id="partySummaryStrip"></div>
         <div class="party-grid" id="partyGrid"></div>
       </div>
       <!-- Step 2: Select Brand -->
       <div id="pbr-step2" style="display:none">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
           <button class="btn bg sm" onclick="showStep1()">← Back</button>
-          <div style="font-size:13px;font-weight:700">Party <span id="selPartyLabel" class="bx bpar"></span></div>
+          <div style="font-size:13px;font-weight:700;flex:1">Party <span id="selPartyLabel" class="bx bpar"></span></div>
+          <button class="btn bg sm" onclick="openOrderFromParty('oos')" title="Order out-of-stock items for this party" style="border-color:var(--red);color:var(--red)">📋 Order OOS</button>
+          <button class="btn bg sm" onclick="openOrderFromParty('sold')" title="Reorder sold items for this party" style="border-color:var(--acc);color:var(--acc)">📋 Order Restock</button>
+          <button class="btn bp sm" onclick="openOrderFromParty('all')" title="Generate full order for this party">📋 Generate Order</button>
         </div>
         <div style="font-size:13px;color:var(--t2);margin-bottom:10px;font-weight:600">Step 2 — Select a Brand</div>
         <!-- Category filter chips -->
@@ -401,17 +454,27 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
             Show Out-of-Stock Only
           </label>
           <span id="partyOosBadge" class="bx bout"></span>
+          <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn bg sm" onclick="autoOrderParty(_selParty,'oos')" style="border-color:var(--red);color:var(--red)" title="Add OOS to cart">🛒 OOS</button>
+            <button class="btn bg sm" onclick="autoOrderParty(_selParty,'low')" style="border-color:var(--yel);color:var(--yel)" title="Add Low Stock to cart">🛒 Low</button>
+            <button class="btn bg sm" onclick="autoOrderParty(_selParty,'instock')" style="border-color:var(--grn);color:var(--grn)" title="Add In-Stock to cart">🛒 In-Stock</button>
+            <button class="btn bp sm" onclick="autoOrderParty(_selParty,'all')" title="Add all to cart">🛒 All</button>
+          </div>
         </div>
         <div id="allPartyArticles"></div>
       </div>
       <!-- Step 3: Brand Articles -->
       <div id="pbr-step3" style="display:none">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
           <button class="btn bg sm" onclick="showStep2()">← Back</button>
-          <div style="font-size:13px;font-weight:700">
+          <div style="font-size:13px;font-weight:700;flex:1">
             Party <span id="selPartyLabel2" class="bx bpar"></span>
             &nbsp;›&nbsp; <span id="selBrandLabel" class="bx bbr"></span>
           </div>
+          <button class="btn bg sm" onclick="openOrderFromBrand('oos')" style="border-color:var(--red);color:var(--red)" title="Out of Stock">📋 OOS</button>
+          <button class="btn bg sm" onclick="openOrderFromBrand('low')" style="border-color:var(--yel);color:var(--yel)" title="Low Stock ≤3">📋 Low</button>
+          <button class="btn bg sm" onclick="openOrderFromBrand('instock')" style="border-color:var(--grn);color:var(--grn)" title="In Stock (reorder)">📋 In-Stock</button>
+          <button class="btn bp sm" onclick="openOrderFromBrand('all')" title="All items">📋 All</button>
         </div>
         <div style="margin-bottom:10px">
           <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px">Filter by Category</div>
@@ -434,14 +497,20 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
 
         <!-- LEFT: Filters -->
         <div style="background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:12px">
-          <div style="font-size:13px;font-weight:700">📋 Order Settings</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:700">📋 Order Settings</div>
+            <button class="btn bg sm" onclick="openOrderCart()" style="font-size:11px">🛒 Cart</button>
+          </div>
+          <button class="btn bg sm" style="width:100%;justify-content:center;font-size:11px" onclick="sendToOrderPage()">⬆️ Load from Order Cart</button>
 
           <div class="fg" style="margin-bottom:0">
             <label>Source</label>
             <select id="ordSrc" onchange="onOrdSrcChange()">
-              <option value="oos">Out of Stock Items</option>
-              <option value="sold">Sold Items (Reorder)</option>
-              <option value="low">Low Stock (≤3)</option>
+              <option value="oos">❌ Out of Stock</option>
+              <option value="low">⚠️ Low Stock (≤3)</option>
+              <option value="instock">✅ In Stock (Reorder)</option>
+              <option value="sold">🔄 Sold Items (Reorder)</option>
+              <option value="all">📦 All Items</option>
             </select>
           </div>
 
@@ -705,11 +774,12 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
     <!-- REPORTS -->
     <div class="pg" id="pg-rep">
       <div class="tabs">
-        <button class="tab A" id="repTabcat"   onclick="rTab('cat',this)">📁 Category</button>
-        <button class="tab"   id="repTabbrand" onclick="rTab('brand',this)">🏷️ Brand</button>
-        <button class="tab"   id="repTabparty" onclick="rTab('party',this)">🤝 Party</button>
-        <button class="tab"   id="repTabsold"  onclick="rTab('sold',this)">📦 Sold Items</button>
-        <button class="tab"   id="repTabsales" onclick="rTab('sales',this)">💰 App Sales</button>
+        <button class="tab A" id="repTabcat"     onclick="rTab('cat',this)">📁 Category</button>
+        <button class="tab"   id="repTabbrand"   onclick="rTab('brand',this)">🏷️ Brand</button>
+        <button class="tab"   id="repTabparty"   onclick="rTab('party',this)">🤝 Party</button>
+        <button class="tab"   id="repTabsold"    onclick="rTab('sold',this)">📦 Sold Items</button>
+        <button class="tab"   id="repTabsales"   onclick="rTab('sales',this)">💰 App Sales</button>
+        <button class="tab"   id="repTabpurchase" onclick="rTab('purchase',this)">📅 Purchase Dates</button>
       </div>
       <!-- Drill-down navigation bar -->
       <div id="repNavBar" style="display:none;align-items:center;gap:10px;padding:8px 0;margin-bottom:10px;border-bottom:1px solid var(--bdr)">
@@ -905,7 +975,19 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
           <button class="btn bg sm" style="margin-top:12px" onclick="resetDvColors()">↺ Reset to Default</button>
         </div>
 
-        <button class="btn bp" onclick="applySettings();toast('Settings saved!','ok')">💾 Save Settings</button>
+        <!-- Password -->
+        <div style="background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:4px">🔐 App Password</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:14px">Change the password required to open the app</div>
+          <div class="fr" style="gap:10px">
+            <div class="fg"><label>Current Password</label><input type="password" id="pwdCurrent" placeholder="Current password…"></div>
+            <div class="fg"><label>New Password</label><input type="password" id="pwdNew" placeholder="New password…"></div>
+            <div class="fg"><label>Confirm New</label><input type="password" id="pwdConfirm" placeholder="Confirm new password…"></div>
+          </div>
+          <button class="btn bp sm" onclick="changePassword()" style="margin-top:4px">🔐 Update Password</button>
+        </div>
+
+        <button class="btn bp" onclick="applySettings();saveSettings();toast('Settings saved!','ok')">💾 Save Settings</button>
       </div>
     </div>
 
@@ -980,6 +1062,44 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
   </div>
 </div>
 
+<!-- ═══ ORDER CART PANEL ═══ -->
+<div id="orderCartPanel">
+  <div class="ocp-header">
+    <span style="font-size:18px">📋</span>
+    <h3>Order Cart <span id="ocpCount" class="bx bbr" style="font-size:11px">0</span></h3>
+    <button class="btn bg sm" onclick="clearOrderCart()">🗑️ Clear</button>
+    <button class="mcl" onclick="toggleOrderCart()" style="font-size:18px;background:none;border:none;cursor:pointer">✕</button>
+  </div>
+  <div class="ocp-body">
+    <div id="ocpRows"></div>
+  </div>
+  <div class="ocp-footer">
+    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+      <select id="ocpSrc" style="flex:1;min-width:130px">
+        <option value="oos">Out of Stock</option>
+        <option value="instock">In Stock</option>
+        <option value="all">All Items</option>
+      </select>
+      <select id="ocpGroup" style="flex:1;min-width:110px">
+        <option value="article">By Article</option>
+        <option value="brand">By Brand</option>
+        <option value="category">By Category</option>
+      </select>
+    </div>
+    <button class="btn bp" style="width:100%;justify-content:center;padding:10px" onclick="sendToOrderPage()">📊 Open in Order Generator</button>
+    <div style="display:flex;gap:7px;margin-top:7px">
+      <button class="btn bg sm" style="flex:1;justify-content:center" onclick="exportOrderCartExcel()">📊 Export</button>
+      <button class="btn bg sm" style="flex:1;justify-content:center" onclick="printOrderCart()">🖨️ Print</button>
+      <button class="btn bg sm" style="flex:1;justify-content:center" onclick="copyOrderCartText()">📋 Copy</button>
+    </div>
+    <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:7px" id="ocpSummary"></div>
+  </div>
+</div>
+<!-- Floating Order Cart Badge -->
+<div class="ocp-badge" id="ocpBadge" onclick="toggleOrderCart()">
+  📋 <span id="ocpBadgeCount">0</span> items in order
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -1026,6 +1146,37 @@ function parseCode(raw){
   return{partyNo,brand,rate,costPer};
 }
 
+/* Parse Item Code (col3 in Excel) to extract purchase date.
+   Format:
+     12-digit: PP YYMMDD XXXX  (2-digit party, e.g. 182604134466 → P18, 13-04-2026)
+     11-digit: PP YYMMDD XXX   (2-digit party, e.g. 12260405040 → P12, 05-04-2026)
+     13-digit: PPP YYMMDD XXXX (3-digit party, e.g. 2452604092402 → P245, 09-04-2026)
+   Purchase Return = stock < 0 OR itemCode blank AND rawCode = "Not Found" / "0" */
+function parseItemCode(itemCode, stock, rawCode){
+  // Detect purchase return first
+  const isPurchaseReturn = (typeof stock==='number' && stock<0)
+    || (!itemCode && (!rawCode || rawCode==='Not Found' || rawCode==='0' || rawCode===0));
+
+  const s = String(itemCode||'').replace(/[^0-9]/g,'');
+  if(s.length<10) return {purchaseDate:'',purchaseDateISO:'',isPurchaseReturn,dateParsed:false};
+
+  // Determine party prefix length
+  const offset = s.length===13 ? 3 : 2;
+  const yy = s.slice(offset,   offset+2);
+  const mm = s.slice(offset+2, offset+4);
+  const dd = s.slice(offset+4, offset+6);
+
+  const year=2000+parseInt(yy), month=parseInt(mm), day=parseInt(dd);
+  if(!year || month<1||month>12 || day<1||day>31)
+    return {purchaseDate:'',purchaseDateISO:'',isPurchaseReturn,dateParsed:false};
+
+  const mmP = mm.padStart(2,'0'), ddP = dd.padStart(2,'0');
+  const purchaseDateISO = `${year}-${mmP}-${ddP}`;
+  const purchaseDate    = `${ddP}-${mmP}-${year}`;
+  return {purchaseDate, purchaseDateISO, isPurchaseReturn, dateParsed:true};
+}
+
+
 /* ─── COLOR MAP ────────────────────────────── */
 const CLR={BLACK:'#1a1a1a',WHITE:'#f0f0f0',RED:'#ef4444',BLUE:'#3b82f6',GREEN:'#22c55e',PINK:'#f472b6',YELLOW:'#fbbf24',PURPLE:'#a855f7',ORANGE:'#f97316',BROWN:'#92400e',GREY:'#9ca3af',GRAY:'#9ca3af',SKIN:'#f5cba7',BEIGE:'#f5deb3',CREAM:'#fffdd0',NAVY:'#1e3a5f',MAROON:'#800000',PEACH:'#ffcba4',LBLUE:'#93c5fd',SBLUE:'#60a5fa',DBLUE:'#1d4ed8',LGREEN:'#86efac',MAGENTA:'#d946ef',TEAL:'#14b8a6',LAVENDER:'#c4b5fd',GOLD:'#ffd700',SILVER:'#c0c0c0',ASOT:'#e879f9',ASTD:'#a78bfa',MULTI:'#818cf8',MIXED:'#f472b6',C:'#22d3ee'};
 function csw(c){return CLR[String(c||'').toUpperCase().trim()]||'#8b5cf6';}
@@ -1052,7 +1203,12 @@ function doImport(file){
         const r=mRaw[i];if(!r[0])continue;
         const nm=String(r[0]).trim();
         const pn=parseName(nm),pc=parseCode(r[16]);
-        master.push({itemName:nm,description:String(r[1]||''),category:String(r[2]||'Uncategorized').trim(),itemCode:String(r[3]||''),salePrice:+r[6]||0,buyPrice:+r[8]||0,mrp:+r[10]||0,stock:+r[11]||0,lowAlert:+r[12]||0.5,dno:String(r[15]||'').trim(),rawCode:String(r[16]||''),article:pn.article,color:pn.color,size:pn.size,partyNo:pc.partyNo,brand:pc.brand,rate:pc.rate,costPer:pc.costPer});
+        const _stk=+r[11]||0;
+      const _itemCode=String(r[3]||'').trim();   // col3 = Item code (contains date)
+      const _rawCode=String(r[16]||'').trim();    // col16 = Code (party-brand-rate)
+      const _dno=String(r[15]||'').trim();        // col15 = D.no (sequential number)
+      const _dp=parseItemCode(_itemCode,_stk,_rawCode);
+      master.push({itemName:nm,description:String(r[1]||''),category:String(r[2]||'Uncategorized').trim(),itemCode:_itemCode,salePrice:+r[6]||0,buyPrice:+r[8]||0,mrp:+r[10]||0,stock:_stk,lowAlert:+r[12]||0.5,dno:_dno,rawCode:_rawCode,article:pn.article,color:pn.color,size:pn.size,partyNo:pc.partyNo,brand:pc.brand,rate:pc.rate,costPer:pc.costPer,purchaseDate:_dp.purchaseDate,purchaseDateISO:_dp.purchaseDateISO,isPurchaseReturn:_dp.isPurchaseReturn,dateParsed:_dp.dateParsed});
       }
       // out of stock
       pf.style.width='73%';st.textContent='Reading OOS sheet…';
@@ -1594,12 +1750,17 @@ function renderProd(){
         <div style="padding:10px 11px"><div style="font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px">${k}</div>
         <div style="font-size:10.5px;color:var(--t3);margin-bottom:6px">${g.category}</div>
         <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px"><span class="bx ${sc}">${sl}</span><span class="bx bbr" style="font-size:10px">${g.brand||'—'}</span></div>
-        <div style="font-size:13px;font-weight:700;color:var(--acc)">₹${g.salePrice}</div></div></div>`;
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+          <div style="font-size:13px;font-weight:700;color:var(--acc)">₹${g.salePrice}</div>
+          <button class="btn bg sm" style="padding:3px 7px;font-size:10px" onclick="event.stopPropagation();quickOrderArticle('${esc(key)}')" title="Quick Order">📋</button>
+        </div></div></div>`;
     }).join('')}</div>`;
   }else{
-    box.innerHTML=`<div class="tw"><table><thead><tr><th>Photo</th><th>Article</th><th>Category</th><th>Brand</th><th>Party</th><th>Colors</th><th>Sizes</th><th>Stock</th><th>Sale ₹</th><th>MRP ₹</th></tr></thead><tbody>${entries.slice(0,500).map(([k,g])=>{
+    box.innerHTML=`<div class="tw"><table><thead><tr><th>Photo</th><th>Article</th><th>Category</th><th>Brand</th><th>Party</th><th>Colors</th><th>Sizes</th><th>Stock</th><th>Sale ₹</th><th>MRP ₹</th><th>Order</th></tr></thead><tbody>${entries.slice(0,500).map(([k,g])=>{
       const img=DB.images[k];const cc=g.totalStock<=0?'cr':g.totalStock<=3?'cy':'cg';
-      return`<tr onclick="openGroup('${esc(k)}')"><td><div class="ith">${img?`<img src="${img}">`:'👗'}</div></td><td><strong style="font-size:12px">${k}</strong></td><td><span class="bx bcat">${g.category}</span></td><td><span class="bx bbr">${g.brand||'—'}</span></td><td><span class="bx bpar">P-${g.partyNo}</span></td><td>${[...g.colors].slice(0,5).map(c=>cswDot(c,12)).join('')}${g.colors.size>5?`<span style="font-size:9px;color:var(--t3)">+${g.colors.size-5}</span>`:''}</td><td style="font-size:11.5px;color:var(--t2)">${[...g.sizes].join(' · ')}</td><td><strong class="${cc}">${g.totalStock}</strong></td><td style="font-weight:700">₹${g.salePrice}</td><td style="color:var(--t3)">₹${g.mrp}</td></tr>`;
+      return`<tr onclick="openGroup('${esc(k)}')"><td><div class="ith">${img?`<img src="${img}">`:'👗'}</div></td><td><strong style="font-size:12px">${k}</strong></td><td><span class="bx bcat">${g.category}</span></td><td><span class="bx bbr">${g.brand||'—'}</span></td><td><span class="bx bpar">P-${g.partyNo}</span></td><td>${[...g.colors].slice(0,5).map(c=>cswDot(c,12)).join('')}${g.colors.size>5?`<span style="font-size:9px;color:var(--t3)">+${g.colors.size-5}</span>`:''}</td><td style="font-size:11.5px;color:var(--t2)">${[...g.sizes].join(' · ')}</td><td><strong class="${cc}">${g.totalStock}</strong></td><td style="font-weight:700">₹${g.salePrice}</td><td style="color:var(--t3)">₹${g.mrp}</td>
+          <td style="text-align:center"><button class="btn bg sm" style="padding:4px 8px;font-size:10px;white-space:nowrap" onclick="event.stopPropagation();quickOrderArticle('${esc(k)}')" title="Quick Order for ${k}">📋 Order</button></td>
+          </tr>`;
     }).join('')}</tbody></table></div>`;
   }
 }
@@ -1620,23 +1781,74 @@ function renderSrch(){
 /* ─── PARTY & BRAND VIEW ────────────────────── */
 function renderPartyGrid(){
   const q=gv('partySearchQ').toLowerCase();
-  // Build party summary
+  const soldMap=Object.fromEntries(DB.sold.map(s=>[s.itemName,s.salesQty]));
   const pm={};
   DB.master.forEach(i=>{
     const p=i.partyNo; if(!p) return;
-    if(!pm[p])pm[p]={items:0,inStock:0,outStock:0,brands:new Set()};
+    if(!pm[p])pm[p]={items:0,inStock:0,outStock:0,brands:new Set(),
+      stockCost:0,stockMrp:0,stockSaleVal:0,soldQty:0,soldMrp:0,soldCost:0};
     pm[p].items++;
-    if(i.stock>0)pm[p].inStock++;else pm[p].outStock++;
+    const sq=soldMap[i.itemName]||0;
+    pm[p].soldQty+=sq;
+    pm[p].soldMrp+=sq*(i.mrp||i.salePrice||0);
+    pm[p].soldCost+=sq*(i.costPer||0);
+    if(i.stock>0){
+      pm[p].inStock++;
+      pm[p].stockCost   +=i.stock*(i.costPer||0);
+      pm[p].stockMrp    +=i.stock*(i.mrp||i.salePrice||0);
+      pm[p].stockSaleVal+=i.stock*(i.salePrice||0);
+    } else {
+      pm[p].outStock++;
+    }
     pm[p].brands.add(i.brand);
   });
-  const parties=Object.keys(pm).sort((a,b)=>+a-+b).filter(p=>!q||p.includes(q)||[...pm[p].brands].some(b=>b.toLowerCase().includes(q)));
-  if(!parties.length){document.getElementById('partyGrid').innerHTML='<div class="empty" style="padding:16px">Import Excel first or refine search</div>';return;}
+  const parties=Object.keys(pm).sort((a,b)=>+a-+b)
+    .filter(p=>!q||p.includes(q)||[...pm[p].brands].some(b=>b.toLowerCase().includes(q)));
+  if(!parties.length){
+    document.getElementById('partyGrid').innerHTML='<div class="empty" style="padding:16px">Import Excel first or refine search</div>';
+    return;
+  }
+  const totCost=parties.reduce((s,p)=>s+pm[p].stockCost,0);
+  const totMrp =parties.reduce((s,p)=>s+pm[p].stockMrp,0);
+  const totSold=parties.reduce((s,p)=>s+pm[p].soldQty,0);
+  const totSoldMrp=parties.reduce((s,p)=>s+pm[p].soldMrp,0);
+  const totIn  =parties.reduce((s,p)=>s+pm[p].inStock,0);
+  const totOut =parties.reduce((s,p)=>s+pm[p].outStock,0);
+  const totItems=parties.reduce((s,p)=>s+pm[p].items,0);
+  const se=document.getElementById('partySummaryStrip');
+  if(se) se.innerHTML=`<div style="display:flex;gap:12px;flex-wrap:wrap;padding:10px 12px;background:var(--bg3);border-radius:10px;margin-bottom:12px;font-size:12px">
+    <div><div style="font-size:10px;color:var(--t3);text-transform:uppercase">Parties</div><strong>${parties.length}</strong></div>
+    <div><div style="font-size:10px;color:var(--t3);text-transform:uppercase">Items</div><strong>${totItems}</strong> (<span class="cg">${totIn}</span>/<span class="cr">${totOut}</span>)</div>
+    <div><div style="font-size:10px;color:var(--t3);text-transform:uppercase">Stock Cost</div><strong style="color:var(--rose)">₹${Math.round(totCost).toLocaleString()}</strong></div>
+    <div><div style="font-size:10px;color:var(--t3);text-transform:uppercase">Stock MRP</div><strong style="color:var(--acc)">₹${Math.round(totMrp).toLocaleString()}</strong></div>
+    <div><div style="font-size:10px;color:var(--t3);text-transform:uppercase">Sold MRP</div><strong style="color:var(--grn)">₹${Math.round(totSoldMrp).toLocaleString()}</strong></div>
+    <div><div style="font-size:10px;color:var(--t3);text-transform:uppercase">Units Sold</div><strong>${totSold.toLocaleString()}</strong></div>
+  </div>`;
   document.getElementById('partyGrid').innerHTML=parties.map(p=>{
     const d=pm[p];
-    return`<div class="party-chip ${_selParty===p?'sel':''}" onclick="selectParty('${p}')">
-      <div class="pn">P-${p}</div>
-      <div class="ps">${d.brands.size} brand${d.brands.size!==1?'s':''}</div>
-      <div class="ps" style="color:${d.outStock>0?'var(--red)':'var(--grn)'}">${d.inStock} in · ${d.outStock} out</div>
+    const pct=d.items>0?Math.round(d.inStock/d.items*100):0;
+    const fill=pct>70?'var(--grn)':pct>30?'var(--yel)':'var(--red)';
+    const sel=p===_selParty?'sel':'';
+    return `<div class="party-chip ${sel}" onclick="selectParty('${p}')">
+      <div class="pc-top">
+        <div>
+          <div class="pc-num">P-${p}</div>
+          <div class="pc-brands">${d.brands.size} brand${d.brands.size!==1?'s':''} · ${d.items} items</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px"><span class="cg">${d.inStock} in</span> · <span class="cr">${d.outStock} out</span></div>
+          <div style="font-size:10px;color:var(--t3)">${pct}% stocked</div>
+        </div>
+      </div>
+      <hr class="pc-divider">
+      <div class="pc-row"><span class="pc-lbl">Stock Cost</span><span class="pc-val" style="color:var(--rose)">₹${Math.round(d.stockCost).toLocaleString()}</span></div>
+      <div class="pc-row"><span class="pc-lbl">Stock MRP</span><span class="pc-val" style="color:var(--acc)">₹${Math.round(d.stockMrp).toLocaleString()}</span></div>
+      <div class="pc-row"><span class="pc-lbl">Sale Value</span><span class="pc-val">₹${Math.round(d.stockSaleVal).toLocaleString()}</span></div>
+      <hr class="pc-divider">
+      <div class="pc-row"><span class="pc-lbl">Sold Qty</span><span class="pc-val cg">${d.soldQty}</span></div>
+      <div class="pc-row"><span class="pc-lbl">Sold MRP</span><span class="pc-val" style="color:var(--grn)">₹${Math.round(d.soldMrp).toLocaleString()}</span></div>
+      <div class="pc-row"><span class="pc-lbl">Sold Cost</span><span class="pc-val" style="color:var(--t2)">₹${Math.round(d.soldCost).toLocaleString()}</span></div>
+      <div class="pc-bar"><div class="pc-bar-fill" style="width:${pct}%;background:${fill}"></div></div>
     </div>`;
   }).join('');
 }
@@ -1839,7 +2051,8 @@ function renderBrandDetailView(){
   const groups=getGroups(items);
   const entries=Object.entries(groups);
   const total=items.length,inStk=items.filter(i=>i.stock>0).length,out=items.filter(i=>i.stock<=0).length;
-  document.getElementById('brandStockInfo').textContent=`${total} items · ${inStk} in stock · ${out} out${_selCategory?' · Category: '+_selCategory:''}`;
+  const retCount=items.filter(i=>i.isPurchaseReturn).length;
+  document.getElementById('brandStockInfo').textContent=`${total} items · ${inStk} in stock · ${out} out${_selCategory?' · Category: '+_selCategory:''}${retCount?' · ⚠️ '+retCount+' returns':''}`;
   if(!entries.length){document.getElementById('brandArticleList').innerHTML='<div class="empty" style="padding:16px">No items found</div>';return;}
   document.getElementById('brandArticleList').innerHTML=entries.map(([k,g])=>{
     const img=DB.images[k];
@@ -1874,6 +2087,7 @@ function renderBrandDetailView(){
                 ${Object.entries(cd.sizes).map(([sz,sd])=>`<div class="sp ${sd.stock>0?'in':'out'}" style="font-size:11px;padding:3px 8px" title="D.no: ${sd.dno}">
                   ${sz}<span class="qty">${sd.stock>0?sd.stock:'0'}</span>
                   ${sd.stock>0?`<button class="acb" onclick="addCart(${JSON.stringify(sd.item).replace(/"/g,'&quot;')})">+Cart</button>`:''}
+                <button class="aob" onclick="addToOrderCart(${JSON.stringify(sd.item).replace(/"/g,'&quot;')},1)">+Order</button>
                 </div>`).join('')}
                 ${allSizes.filter(sz=>!cd.sizes[sz]).map(sz=>`<div class="sp out" style="font-size:11px;padding:3px 8px;opacity:.4">${sz}<span class="qty">N/A</span></div>`).join('')}
               </div>
@@ -1888,7 +2102,7 @@ function renderBrandDetailView(){
 function renderOOS(){
   const q=gv('oQ').toLowerCase(),cat=gv('oCat'),br=gv('oBr'),par=gv('oPar');
   const items=DB.master.filter(i=>{
-    if(i.stock>0)return false;
+    if(i.stock>0&&!i.isPurchaseReturn)return false;
     if(q&&!i.itemName.toLowerCase().includes(q)&&!i.dno.includes(q)&&!i.article.toLowerCase().includes(q)&&!i.brand.toLowerCase().includes(q))return false;
     if(cat&&i.category!==cat)return false;if(br&&i.brand!==br)return false;if(par&&i.partyNo!==par)return false;
     return true;
@@ -1911,16 +2125,20 @@ function openGroup(key){
     colorMap[c].totalStock+=item.stock;
   });
   const allSizes=[...new Set(g.items.map(i=>i.size||'F'))].sort();
-  const matHTML=Object.entries(colorMap).map(([color,cd])=>`<div class="cb">
-    <div class="ch"><div class="csw" style="background:${csw(color)}"></div><div class="cn">${color}</div><div class="cst">${cd.totalStock} pcs</div></div>
-    <div class="sg">
-      ${Object.entries(cd.sizes).map(([sz,sd])=>`<div class="sp ${sd.stock>0?'in':'out'}" title="D.no: ${sd.dno}">
-        <span>${sz}</span><span class="qty">${sd.stock>0?sd.stock+' pcs':'Out'}</span>
-        ${sd.stock>0?`<button class="acb" onclick="addCart(${JSON.stringify(sd.item).replace(/"/g,'&quot;')})">+Cart</button>`:''}
-      </div>`).join('')}
-      ${allSizes.filter(sz=>!cd.sizes[sz]).map(sz=>`<div class="sp out" style="opacity:.4"><span>${sz}</span><span class="qty">N/A</span></div>`).join('')}
-    </div>
-  </div>`).join('');
+  const matHTML=Object.entries(colorMap).map(([color,cd])=>{
+    const sizePills=Object.entries(cd.sizes).map(([sz,sd])=>{
+      const itemJson=JSON.stringify(sd.item).replace(/"/g,'&quot;');
+      const inStock=sd.stock>0;
+      return '<div class="sp '+(inStock?'in':'out')+'" title="D.no: '+sd.dno+'">'
+        +'<span class="szlbl">'+sz+'</span>'
+        +'<span class="qty">'+(inStock?sd.stock+' pcs':'<span class=\'cr\'>OUT</span>')+'</span>'
+        +(inStock?'<button class="acb" onclick="addCart('+itemJson+')">+Sale</button>':'')
+        +(sd.item.isPurchaseReturn||sd.stock<0?'<button class="aob" disabled style="opacity:.4;cursor:not-allowed" title="Purchase Return — cannot order">Return</button>':'<button class="aob" onclick="addToOrderCart('+itemJson+',1);updateOrderBtn(this)" title="Add to Order Cart">+Order</button>')
+        +'</div>';
+    }).join('');
+    const naPlaceholders=allSizes.filter(sz=>!cd.sizes[sz]).map(sz=>'<div class="sp out" style="opacity:.3"><span class="szlbl">'+sz+'</span><span class="qty">N/A</span></div>').join('');
+    return '<div class="cb"><div class="ch"><div class="csw" style="background:'+csw(color)+'"></div><div class="cn">'+color+'</div><div class="cst">'+cd.totalStock+' pcs</div></div><div class="sg">'+sizePills+naPlaceholders+'</div></div>';
+  }).join('');
   document.getElementById('mPB').innerHTML=`
     <div class="d-hero">
       <div class="d-img">${img?`<img src="${img}">`:'👗'}<div class="d-img-btns"><button class="btn bg sm" onclick="openImgModal('${esc(key)}')">📷 ${img?'Change':'Add'} Photo</button></div></div>
@@ -1934,6 +2152,8 @@ function openGroup(key){
           <div class="mgc"><div class="l">Total Stock</div><div class="v ${g.totalStock<=0?'cr':'cg'}">${g.totalStock} pcs</div></div>
           <div class="mgc"><div class="l">Colors</div><div class="v">${Object.keys(colorMap).length}</div></div>
           <div class="mgc"><div class="l">Sizes</div><div class="v" style="font-size:12px">${allSizes.join(' · ')}</div></div>
+          <div class="mgc"><div class="l">Purchase Date</div><div class="v" style="font-size:12px">${g.items[0]?.purchaseDate||'<span style=\'color:var(--t3)\'>—</span>'}</div></div>
+          ${g.items.some(i=>i.isPurchaseReturn)?'<div class="mgc" style="grid-column:1/-1"><div style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:7px;padding:6px 10px;font-size:11px;color:var(--red);font-weight:700">⚠️ PURCHASE RETURN — This item cannot be ordered</div></div>':''}
         </div>
         <div style="font-size:11px;color:var(--t3);background:var(--bg3);padding:8px 11px;border-radius:8px"><strong>Code:</strong> ${g.rawCode||'—'}</div>
       </div>
@@ -2320,6 +2540,10 @@ function renderRep(){
       </tr>`;
     }).join('')||'<tr><td colspan="7" class="empty" style="padding:16px">No data</td></tr>'}</tbody></table></div>`;
 
+  }else if(_rTab==='purchase'){
+    if(hint) hint.textContent='Click date to see all items purchased on that day';
+    renderPurchaseDateReport(rb,mm);
+    return;
   }else{
     // App Sales
     const tot=DB.sales.reduce((s,x)=>s+x.total,0);
@@ -2425,6 +2649,43 @@ function renderRepDrill(drill, mm, rb, hint){
         <td class="ca">${d.sold}</td>
         <td style="color:var(--t3);font-size:11px">→ Articles</td>
       </tr>`).join('')}</tbody></table></div>`;
+
+  }else if(level==='purchaseDateItems'){
+    // Show all items purchased on that date
+    if(hint) hint.textContent='Click article to view detail';
+    const items=DB.master.filter(i=>i.purchaseDateISO===data.date);
+    const soldMap=Object.fromEntries(DB.sold.map(s=>[s.itemName,s.salesQty]));
+    const inStock=items.filter(i=>i.stock>0).length;
+    const totalSold=items.reduce((s,i)=>s+(soldMap[i.itemName]||0),0);
+    const totalCost=items.reduce((s,i)=>s+i.stock*(i.costPer||0),0);
+    rb.innerHTML=`
+      <div class="sr" style="margin-bottom:12px">
+        <div class="sc v"><div class="sc-ico">📦</div><div class="sc-lbl">Items</div><div class="sc-val">${items.length}</div></div>
+        <div class="sc g"><div class="sc-ico">✅</div><div class="sc-lbl">In Stock</div><div class="sc-val cg">${inStock}</div></div>
+        <div class="sc r"><div class="sc-ico">❌</div><div class="sc-lbl">Out of Stock</div><div class="sc-val cr">${items.length-inStock}</div></div>
+        <div class="sc y"><div class="sc-ico">📤</div><div class="sc-lbl">Units Sold</div><div class="sc-val">${totalSold}</div></div>
+        <div class="sc i"><div class="sc-ico">💰</div><div class="sc-lbl">Current Stock Cost</div><div class="sc-val" style="font-size:16px">₹${Math.round(totalCost).toLocaleString()}</div></div>
+      </div>
+      <div class="tw"><table>
+        <thead><tr><th>Article</th><th>Category</th><th>Brand</th><th>Party</th><th>Color</th><th>Size</th><th>D.no</th><th>Stock</th><th>Sold</th><th>Cost ₹</th><th>Sale ₹</th><th>Return?</th></tr></thead>
+        <tbody>${items.sort((a,b)=>(soldMap[b.itemName]||0)-(soldMap[a.itemName]||0)).map(i=>{
+          const sq=soldMap[i.itemName]||0;
+          return`<tr onclick="openGroup('${esc(i.article)}')" style="cursor:pointer" onmouseover="this.style.background='rgba(99,102,241,.06)'" onmouseout="this.style.background=''">
+            <td><strong style="font-size:12px">${i.article}</strong></td>
+            <td><span class="bx bcat">${i.category}</span></td>
+            <td><span class="bx bbr">${i.brand}</span></td>
+            <td><span class="bx bpar">P-${i.partyNo}</span></td>
+            <td>${cswDot(i.color)}<span class="bx bclr">${i.color}</span></td>
+            <td><span class="bx bsz">${i.size}</span></td>
+            <td style="font-size:10px;font-family:monospace;color:var(--cyn)">${i.dno}</td>
+            <td class="${i.stock<=0?'cr':i.stock<=3?'cy':'cg'}" style="font-weight:700">${i.stock<=0?'OUT':i.stock}</td>
+            <td class="ca">${sq||'—'}</td>
+            <td>₹${i.costPer}</td>
+            <td>₹${i.salePrice}</td>
+            <td>${i.isPurchaseReturn?'<span class="bx bout">RETURN</span>':''}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div>`;
 
   }else if(level==='saleDetail'){
     // Sale detail
@@ -2929,7 +3190,7 @@ const ACCENT_PRESETS=[
   {name:'Red',      val:'#ef4444'},
 ];
 const DEFAULT_CHART_COLORS=['#6366f1','#ec4899','#10b981','#f59e0b','#06b6d4','#8b5cf6','#f97316','#14b8a6'];
-let CFG={theme:'light',accent:'#6366f1',chartColors:[...DEFAULT_CHART_COLORS],storeName:'ROSY',storePhone:'',storeAddr:'',storeFtr:'Thank you!',staff:[],panelBg:'',panelText:'',panelActiveBg:'',panelActiveText:'',dvColors:{},topbarColors:{},ribbonColors:{}};
+let CFG={theme:'light',accent:'#6366f1',appPassword:'rosylg26',chartColors:[...DEFAULT_CHART_COLORS],storeName:'ROSY',storePhone:'',storeAddr:'',storeFtr:'Thank you!',staff:[],panelBg:'',panelText:'',panelActiveBg:'',panelActiveText:'',dvColors:{},topbarColors:{},ribbonColors:{}};
 
 function loadSettings(){
   try{const s=localStorage.getItem('rosyCFG');if(s)CFG={...CFG,...JSON.parse(s)};}catch(e){}
@@ -3235,16 +3496,18 @@ function onOrdBrandChange(){
 
 function getOrderSourceItems(){
   const src=gv('ordSrc'), par=gv('ordPar'), br=gv('ordBr'), cat=gv('ordCat');
+  const soldMap=Object.fromEntries(DB.sold.map(s=>[s.itemName,s.salesQty]));
   let items=DB.master.filter(i=>{
+    if(i.isPurchaseReturn||i.stock<0) return false; // never order purchase returns
+    if(!i.rawCode||i.rawCode==='Not Found'||i.rawCode==='0') return false;
     if(par&&i.partyNo!==par) return false;
     if(br&&i.brand!==br)     return false;
     if(cat&&i.category!==cat) return false;
-    if(src==='oos')  return i.stock<=0;
-    if(src==='low')  return i.stock>0&&i.stock<=3;
-    if(src==='sold'){
-      const soldMap=Object.fromEntries(DB.sold.map(s=>[s.itemName,s.salesQty]));
-      return soldMap[i.itemName]>0 && i.stock<=3;
-    }
+    if(src==='oos')     return i.stock<=0;
+    if(src==='low')     return i.stock>0&&i.stock<=3;
+    if(src==='instock') return i.stock>0;
+    if(src==='sold')    return (soldMap[i.itemName]||0)>0;
+    if(src==='all')     return true;
     return true;
   });
   return items;
@@ -3894,8 +4157,589 @@ function updateTopbarPreview(){
   pv.style.border=`1px solid ${bdr}`;
 }
 
+/* ═══════════════════════════════════════════════
+   ORDER FROM PARTY & BRAND VIEW
+═══════════════════════════════════════════════ */
+
+/* Navigate to Order Generator pre-filled with current party */
+function openOrderFromParty(src){
+  if(!_selParty){ toast('No party selected','err'); return; }
+  _openOrderWith({party:_selParty, brand:'', src});
+}
+
+/* Navigate to Order Generator pre-filled with current party + brand */
+function openOrderFromBrand(src){
+  if(!_selParty || !_selBrand){ toast('Select party and brand first','err'); return; }
+  _openOrderWith({party:_selParty, brand:_selBrand, src});
+}
+
+function _openOrderWith({party, brand, src}){
+  // Map src: 'all' → 'oos' + 'low' combined = just use 'oos' then show all
+  // We'll use a special 'all' source that shows all items for this party/brand
+  // src passed directly as the ordSrc value
+  const ordSrc = src==='all'?'all':src==='sold'?'sold':src==='instock'?'instock':'oos';
+
+  // Navigate to Order Generator page
+  const ordEl = document.querySelector('[data-pg="order"]');
+  if(ordEl) gp(ordEl);
+
+  // Small delay to let page render, then set filters
+  setTimeout(()=>{
+    // Set source
+    const srcSel = document.getElementById('ordSrc');
+    if(srcSel) srcSel.value = ordSrc;
+
+    // Set party
+    const parSel = document.getElementById('ordPar');
+    if(parSel){
+      parSel.value = party;
+      // Trigger cascade to fill brand dropdown
+      rebuildSelect('ordBr', getBrandsFor(party), 'All Brands');
+      rebuildSelect('ordCat', getCatsFor(party,''), 'All Categories');
+    }
+
+    // Set brand if applicable
+    if(brand){
+      const brSel = document.getElementById('ordBr');
+      if(brSel){
+        brSel.value = brand;
+        rebuildSelect('ordCat', getCatsFor(party, brand), 'All Categories');
+      }
+    }
+
+
+    // Render the order table
+    renderOrder();
+
+    // Show a toast confirming what was loaded
+    const partyLabel = 'Party '+party;
+    const brandLabel = brand ? ' › '+brand : '';
+    const srcLabel   = src==='oos'?'Out of Stock':src==='sold'?'Restock (Sold)':'All Items';
+    toast(`📋 ${partyLabel}${brandLabel} — ${srcLabel}`,'ok');
+  }, 120);
+}
+
+/* ═══════════════════════════════════════════════
+   ORDER CART — Add-to-order from any product view
+   Supports: In Stock, OOS, mixed
+   Auto party-wise generation
+═══════════════════════════════════════════════ */
+let ORDER_CART = {}; // { itemName: { item, qty } }
+
+function updateOrderBtn(btn){
+  if(!btn) return;
+  btn.textContent='✓ Added';
+  btn.style.background='rgba(16,185,129,.3)';
+  btn.style.color='var(--grn)';
+  btn.style.borderColor='rgba(16,185,129,.5)';
+}
+function addToOrderCart(item, qty){
+  if(typeof item === 'string') item = JSON.parse(item);
+  qty = parseInt(qty) || 1;
+  // Block purchase returns from being ordered
+  if(item.isPurchaseReturn || item.stock < 0 || !item.rawCode || item.rawCode==='Not Found' || item.rawCode==='0'){
+    toast('⛔ '+item.itemName+' is a Purchase Return — cannot add to order', 'err');
+    return;
+  }
+  const k = item.itemName;
+  if(ORDER_CART[k]){
+    ORDER_CART[k].qty += qty;
+  } else {
+    ORDER_CART[k] = { item: {...item}, qty };
+  }
+  renderOrderCart();
+  // Open panel on first add
+  if(Object.keys(ORDER_CART).length === 1) openOrderCart();
+  toast(`+Order: ${item.itemName}`, 'ok');
+}
+
+function removeFromOrderCart(name){
+  delete ORDER_CART[name];
+  renderOrderCart();
+}
+
+function clearOrderCart(){
+  ORDER_CART = {};
+  renderOrderCart();
+  toast('Order cart cleared', 'ok');
+}
+
+function toggleOrderCart(){
+  const p = document.getElementById('orderCartPanel');
+  if(p) p.classList.toggle('open');
+}
+function openOrderCart(){
+  const p = document.getElementById('orderCartPanel');
+  if(p) p.classList.add('open');
+}
+
+function renderOrderCart(){
+  const items = Object.values(ORDER_CART);
+  const count = items.length;
+  const totalQty = items.reduce((s,o) => s+o.qty, 0);
+  const totalCost = items.reduce((s,o) => s+o.qty*(o.item.costPer||0), 0);
+
+  // Badge
+  const badge = document.getElementById('ocpBadge');
+  const badgeCnt = document.getElementById('ocpBadgeCount');
+  const panelCnt = document.getElementById('ocpCount');
+  if(badge) badge.style.display = count > 0 ? 'flex' : 'none';
+  if(badgeCnt) badgeCnt.textContent = count;
+  if(panelCnt) panelCnt.textContent = count;
+
+  // Summary
+  const sumEl = document.getElementById('ocpSummary');
+  if(sumEl) sumEl.textContent = count > 0
+    ? `${count} items · ${totalQty} pcs · Est. ₹${Math.round(totalCost).toLocaleString()}`
+    : '';
+
+  // Rows
+  const rows = document.getElementById('ocpRows');
+  if(!rows) return;
+  if(!count){
+    rows.innerHTML = `<div class="empty" style="padding:24px;font-size:13px"><div style="font-size:32px;margin-bottom:8px">📋</div>
+      <p>Click <strong>+Order</strong> on any size to add</p>
+      <p style="margin-top:8px;font-size:11px;color:var(--t3)">Works from: Product detail · Brand view · All Products</p></div>`;
+    return;
+  }
+
+  // Group by party
+  const byParty = {};
+  items.forEach(o => {
+    const p = 'Party ' + (o.item.partyNo || '?');
+    if(!byParty[p]) byParty[p] = [];
+    byParty[p].push(o);
+  });
+
+  rows.innerHTML = Object.entries(byParty).map(([party, partyItems]) => {
+    const pCost = partyItems.reduce((s,o) => s+o.qty*(o.item.costPer||0), 0);
+    return `<div style="margin-bottom:10px">
+      <div style="font-size:11px;font-weight:700;color:var(--cyn);padding:5px 0;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between">
+        <span>${party}</span><span style="color:var(--t3)">₹${Math.round(pCost).toLocaleString()}</span>
+      </div>
+      ${partyItems.map(o => {
+        const i = o.item;
+        const stk = i.stock;
+        const stkLabel = stk <= 0 ? '<span class="cr" style="font-size:10px">OUT</span>' : `<span class="${stk<=3?'cy':'cg'}" style="font-size:10px">${stk} pcs</span>`;
+        return `<div class="ocr">
+          <div>
+            <div style="font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.itemName}</div>
+            <div style="font-size:10px;color:var(--t3)">${i.brand||''} · ${i.color} · ${i.size} · ₹${i.costPer}/pc ${stkLabel}</div>
+          </div>
+          <input type="number" min="1" value="${o.qty}" onchange="ORDER_CART['${esc(i.itemName)}'].qty=Math.max(1,parseInt(this.value)||1);renderOrderCart()" style="width:60px;text-align:center;padding:3px 5px;font-size:12px">
+          <button onclick="removeFromOrderCart('${esc(i.itemName)}')" style="background:none;border:none;font-size:15px;color:var(--red);cursor:pointer">✕</button>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+/* ── Auto-generate order for whole party ── */
+function autoOrderParty(partyNo, srcType){
+  // srcType: 'oos' | 'instock' | 'all'
+  const items = DB.master.filter(i => {
+    if(i.isPurchaseReturn || i.stock < 0) return false;
+    if(!i.rawCode || i.rawCode==='Not Found' || i.rawCode==='0') return false;
+    if(i.partyNo !== partyNo) return false;
+    if(srcType === 'oos')     return i.stock <= 0;
+    if(srcType === 'instock') return i.stock > 0;
+    if(srcType === 'low')     return i.stock > 0 && i.stock <= 3;
+    return true; // 'all'
+  });
+  if(!items.length){ toast('No items found for this filter', 'err'); return; }
+  items.forEach(i => {
+    ORDER_CART[i.itemName] = { item: {...i}, qty: 1 };
+  });
+  renderOrderCart();
+  openOrderCart();
+  toast(`Added ${items.length} items (Party ${partyNo})`, 'ok');
+}
+
+/* ── Send Order Cart to Order Generator page ── */
+function sendToOrderPage(){
+  if(!Object.keys(ORDER_CART).length){ toast('Order cart is empty', 'err'); return; }
+  const el = document.querySelector('[data-pg="order"]');
+  if(el) gp(el);
+  setTimeout(() => {
+    // Load ORDER_CART items into _ordItems
+    _ordItems = {};
+    Object.values(ORDER_CART).forEach(o => {
+      _ordItems[o.item.itemName] = {
+        item: o.item,
+        qty: o.qty,
+        selected: true,
+        editedCost: o.item.costPer,
+        editedMrp:  o.item.mrp,
+        editedName: o.item.itemName,
+      };
+    });
+    // Render the order table
+    renderOrderFromCart();
+    toast(`${Object.keys(_ordItems).length} items loaded into Order Generator`, 'ok');
+  }, 150);
+}
+
+/* Render order table from ORDER_CART items */
+function renderOrderFromCart(){
+  const groupBy = gv('ordGroup') || 'article';
+  const items   = Object.values(_ordItems).map(o => o.item);
+  if(!items.length){
+    document.getElementById('ordTable').innerHTML = '<div class="empty" style="padding:30px"><div style="font-size:32px;margin-bottom:8px">📋</div><p>Order cart is empty</p></div>';
+    return;
+  }
+  const groups  = {};
+  items.forEach(i => {
+    const key = groupBy==='article'?i.article:groupBy==='category'?i.category:i.brand;
+    if(!groups[key]) groups[key] = [];
+    groups[key].push(i);
+  });
+  const soldMap = Object.fromEntries(DB.sold.map(s => [s.itemName, s.salesQty]));
+  let html = `<table style="width:100%;border-collapse:collapse">
+    <thead><tr>
+      <th style="padding:7px 8px;background:var(--bg3);font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;position:sticky;top:0;width:28px">☑</th>
+      <th style="padding:7px 8px;background:var(--bg3);font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;position:sticky;top:0">Item / Name</th>
+      <th style="padding:7px 8px;background:var(--bg3);font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;position:sticky;top:0">Color · Size</th>
+      <th style="padding:7px 8px;background:var(--bg3);font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;position:sticky;top:0">Stock</th>
+      <th style="padding:7px 8px;background:var(--bg3);font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;position:sticky;top:0">Sold</th>
+      <th style="padding:7px 8px;background:var(--bg3);font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;position:sticky;top:0">Ord Qty</th>
+      <th style="padding:7px 8px;background:var(--bg3);font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;position:sticky;top:0">Cost ₹</th>
+      <th style="padding:7px 8px;background:var(--bg3);font-size:9.5px;font-weight:700;color:var(--t3);text-transform:uppercase;position:sticky;top:0">MRP ₹</th>
+    </tr></thead><tbody>`;
+  Object.entries(groups).sort((a,b) => a[0].localeCompare(b[0])).forEach(([gk, gitems]) => {
+    const gTot = gitems.reduce((s,i) => s+(_ordItems[i.itemName]?.editedCost||i.costPer)*(_ordItems[i.itemName]?.qty||1), 0);
+    html += `<tr><td colspan="8" style="padding:6px 8px;background:linear-gradient(90deg,var(--bg2),transparent);font-size:11px;font-weight:700;color:var(--acc)">${gk} <span style="font-size:10px;color:var(--t3);font-weight:400">~₹${Math.round(gTot).toLocaleString()}</span></td></tr>`;
+    gitems.forEach(i => {
+      const st = _ordItems[i.itemName];
+      const sq = soldMap[i.itemName] || 0;
+      const stockCls = i.stock<=0?'cr':i.stock<=3?'cy':'cg';
+      html += `<tr onmouseover="this.style.background='rgba(99,102,241,.04)'" onmouseout="this.style.background=''">
+        <td style="padding:5px 8px;text-align:center"><input type="checkbox" ${st?.selected?'checked':''} onchange="ordToggle('${esc(i.itemName)}',this.checked)" style="width:auto;accent-color:var(--acc)"></td>
+        <td style="padding:5px 8px"><input value="${st?.editedName||i.itemName}" onchange="ordEdit('${esc(i.itemName)}','name',this.value)" style="font-size:11px;font-weight:700;background:transparent;border:none;border-bottom:1px dashed var(--bdr);width:100%;padding:1px 2px">
+          <div style="font-size:10px;color:var(--t3)">${i.brand} · P-${i.partyNo}</div></td>
+        <td style="padding:5px 8px">${cswDot(i.color,10)}<span style="font-size:11px">${i.color}</span> <span class="bx bsz" style="font-size:9px">${i.size}</span></td>
+        <td style="padding:5px 8px;text-align:center"><strong class="${stockCls}" style="font-size:12px">${i.stock<=0?'OUT':i.stock}</strong></td>
+        <td style="padding:5px 8px;text-align:center;font-size:12px;color:var(--acc)">${sq||'—'}</td>
+        <td style="padding:5px 8px"><input type="number" min="1" value="${st?.qty||1}" onchange="ordEdit('${esc(i.itemName)}','qty',this.value)" style="width:56px;text-align:center;padding:3px 6px;font-size:12px"></td>
+        <td style="padding:5px 8px"><input type="number" min="0" step="0.01" value="${st?.editedCost||i.costPer}" onchange="ordEdit('${esc(i.itemName)}','cost',this.value)" style="width:70px;text-align:right;padding:3px 6px;font-size:12px"></td>
+        <td style="padding:5px 8px"><input type="number" min="0" step="0.01" value="${st?.editedMrp||i.mrp}" onchange="ordEdit('${esc(i.itemName)}','mrp',this.value)" style="width:70px;text-align:right;padding:3px 6px;font-size:12px"></td>
+      </tr>`;
+    });
+  });
+  html += '</tbody></table>';
+  document.getElementById('ordTable').innerHTML = html;
+  updateOrdSummary();
+}
+
+/* ── Export / Print Order Cart directly ── */
+function exportOrderCartExcel(){
+  const items = Object.values(ORDER_CART);
+  if(!items.length){ toast('Order cart is empty','err'); return; }
+  xlDl(items.map(o => ({
+    'Party': 'Party '+o.item.partyNo, 'Brand': o.item.brand,
+    'Category': o.item.category, 'Article': o.item.article,
+    'Item Name': o.item.itemName, 'Color': o.item.color, 'Size': o.item.size,
+    'D.no': o.item.dno, 'Cur. Stock': o.item.stock,
+    'Order Qty': o.qty, 'Cost/pc ₹': o.item.costPer,
+    'Total Cost ₹': Math.round(o.qty * o.item.costPer),
+    'MRP ₹': o.item.mrp, 'Sale Price ₹': o.item.salePrice,
+  })), 'ROSY_OrderCart');
+}
+
+function copyOrderCartText(){
+  const items = Object.values(ORDER_CART);
+  if(!items.length){ toast('Order cart is empty','err'); return; }
+  const byParty = {};
+  items.forEach(o => {
+    const p = 'Party '+o.item.partyNo;
+    if(!byParty[p]) byParty[p] = {};
+    const b = o.item.brand||'—';
+    if(!byParty[p][b]) byParty[p][b] = [];
+    byParty[p][b].push(o);
+  });
+  let text = `ORDER — ${new Date().toLocaleDateString('en-IN')}
+${'═'.repeat(40)}
+`;
+  Object.entries(byParty).forEach(([party, brands]) => {
+    text += `
+▶ ${party}
+`;
+    Object.entries(brands).forEach(([brand, orders]) => {
+      text += `  ◆ ${brand}
+`;
+      orders.forEach(o => { text += `    ${o.item.itemName.padEnd(30)}  Qty: ${o.qty}  Cost: ₹${o.item.costPer}
+`; });
+    });
+  });
+  const grand = items.reduce((s,o) => s+o.qty*o.item.costPer, 0);
+  text += `
+Total: ₹${Math.round(grand).toLocaleString()} · ${items.length} items
+`;
+  navigator.clipboard.writeText(text).then(() => toast('Copied!','ok')).catch(() => {
+    const ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    toast('Copied!','ok');
+  });
+}
+
+function printOrderCart(){
+  const items = Object.values(ORDER_CART);
+  if(!items.length){ toast('Order cart is empty','err'); return; }
+  // Reuse printOrder but with ORDER_CART data
+  const prev = {..._ordItems};
+  _ordItems = {};
+  items.forEach(o => { _ordItems[o.item.itemName] = { item:o.item, qty:o.qty, selected:true, editedCost:o.item.costPer, editedMrp:o.item.mrp, editedName:o.item.itemName }; });
+  printOrder();
+  _ordItems = prev;
+}
+
+/* ── Add ALL sizes of current article to order cart ── */
+function addAllToOrderCart(srcType){
+  // srcType: 'oos' | 'instock' | 'all'
+  if(!_mkey){ toast('No article open','err'); return; }
+  const g = getGroups()[_mkey];
+  if(!g){ toast('Article not found','err'); return; }
+  let added = 0;
+  g.items.forEach(item => {
+    if(item.isPurchaseReturn || item.stock < 0) return; // skip purchase returns
+    if(!item.rawCode || item.rawCode==='Not Found' || item.rawCode==='0') return;
+    if(srcType==='oos'     && item.stock >  0) return;
+    if(srcType==='instock' && item.stock <= 0) return;
+    ORDER_CART[item.itemName] = { item:{...item}, qty:1 };
+    added++;
+  });
+  if(!added){ toast(`No ${srcType==='oos'?'out-of-stock':srcType==='instock'?'in-stock':''}  items to add`,'err'); return; }
+  renderOrderCart();
+  openOrderCart();
+  cm('mProd');
+  toast(`${added} sizes added to Order Cart ✓`,'ok');
+}
+
+/* ── Quick Order from article grid/table without opening full modal ── */
+function quickOrderArticle(key){
+  const g = getGroups()[key]; if(!g) return;
+  // Build a small popup showing all variants with checkboxes
+  const colorMap = {};
+  g.items.forEach(item=>{
+    const c=item.color||'—';
+    if(!colorMap[c])colorMap[c]={sizes:{},totalStock:0};
+    colorMap[c].sizes[item.size||'F']={stock:item.stock,dno:item.dno,item};
+    colorMap[c].totalStock+=item.stock;
+  });
+  const allSizes=[...new Set(g.items.map(i=>i.size||'F'))].sort();
+  const bodyHtml = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:15px;font-weight:700">${key}</div>
+        <div style="font-size:12px;color:var(--t2)">${g.category} · <span class="bx bbr">${g.brand||'—'}</span> · <span class="bx bpar">P-${g.partyNo}</span></div>
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <button class="btn bg sm" onclick="quickOrderAll('${esc(key)}','oos')" style="border-color:var(--red);color:var(--red)">📋 OOS Only</button>
+        <button class="btn bg sm" onclick="quickOrderAll('${esc(key)}','instock')" style="border-color:var(--grn);color:var(--grn)">📋 In-Stock Only</button>
+        <button class="btn bp sm" onclick="quickOrderAll('${esc(key)}','all')">📋 All Sizes</button>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--t3);margin-bottom:10px">Click size to add · <strong>+Order</strong> = add to order cart</div>
+    ${Object.entries(colorMap).map(([color,cd])=>`
+      <div class="cb" style="margin-bottom:8px">
+        <div class="ch"><div class="csw" style="background:${csw(color)}"></div><div class="cn">${color}</div><div class="cst">${cd.totalStock} pcs</div></div>
+        <div class="sg">
+          ${Object.entries(cd.sizes).map(([sz,sd])=>`
+            <div class="sp ${sd.stock>0?'in':'out'}" onclick="addToOrderCart(${JSON.stringify(sd.item).replace(/"/g,'&quot;')},1);this.style.outline='2px solid var(--acc)'" title="Click to add to order · D.no: ${sd.dno}">
+              <span>${sz}</span>
+              <span class="qty">${sd.stock>0?sd.stock+' pcs':'OUT'}</span>
+              <button class="aob" onclick="event.stopPropagation();addToOrderCart(${JSON.stringify(sd.item).replace(/"/g,'&quot;')},1)">+Order</button>
+            </div>`).join('')}
+          ${allSizes.filter(sz=>!cd.sizes[sz]).map(sz=>`<div class="sp out" style="opacity:.3"><span>${sz}</span><span class="qty">N/A</span></div>`).join('')}
+        </div>
+      </div>`).join('')}
+    <div style="font-size:11px;color:var(--t3);margin-top:10px;text-align:center">
+      Items added show highlighted. <a href="#" onclick="event.preventDefault();toggleOrderCart()" style="color:var(--acc)">View Order Cart →</a>
+    </div>`;
+  openDrillModal('📋 Quick Order: '+key, bodyHtml);
+}
+
+function quickOrderAll(key, srcType){
+  const g = getGroups()[key]; if(!g) return;
+  let added = 0;
+  g.items.forEach(item=>{
+    if(item.isPurchaseReturn || item.stock < 0) return; // skip purchase returns
+    if(!item.rawCode || item.rawCode==='Not Found' || item.rawCode==='0') return;
+    if(srcType==='oos'     && item.stock >  0) return;
+    if(srcType==='instock' && item.stock <= 0) return;
+    ORDER_CART[item.itemName] = { item:{...item}, qty:1 };
+    added++;
+  });
+  renderOrderCart();
+  openOrderCart();
+  cm('mDrill');
+  toast(`${added} sizes of ${key} added to Order Cart`,'ok');
+}
+
+/* ═══════════════════════════════════════════════
+   PURCHASE DATE REPORT
+   Shows stock by purchase date, party-wise
+   Identifies fast/slow moving stock
+═══════════════════════════════════════════════ */
+function renderPurchaseDateReport(rb, mm){
+  const soldMap=Object.fromEntries(DB.sold.map(s=>[s.itemName,s.salesQty]));
+
+  // Group by purchase date
+  const byDate={};
+  DB.master.forEach(i=>{
+    if(!i.dateParsed||!i.purchaseDateISO) return;
+    const d=i.purchaseDateISO;
+    if(!byDate[d])byDate[d]={items:[],totalStock:0,totalSold:0,totalCost:0,parties:new Set(),isPurchaseReturn:false};
+    byDate[d].items.push(i);
+    byDate[d].totalStock+=i.stock;
+    byDate[d].totalSold+=(soldMap[i.itemName]||0);
+    byDate[d].totalCost+=(i.stock*(i.costPer||0));
+    byDate[d].parties.add(i.partyNo);
+    if(i.isPurchaseReturn)byDate[d].isPurchaseReturn=true;
+  });
+
+  const sortedDates=Object.keys(byDate).sort().reverse(); // newest first
+
+  if(!sortedDates.length){
+    rb.innerHTML='<div class="empty" style="padding:30px"><div style="font-size:32px;margin-bottom:8px">📅</div><p>No purchase date data. Re-import your Excel file to parse dates from D.no codes.</p></div>';
+    return;
+  }
+
+  // Summary cards
+  const today=new Date();
+  const totalItems=DB.master.filter(i=>i.dateParsed).length;
+  const datesCount=sortedDates.length;
+  const recentDate=sortedDates[0];
+  const recentDays=Math.floor((today-new Date(recentDate))/(1000*60*60*24));
+
+  // Calculate stock velocity (sold/stock ratio per batch)
+  const fastBatches=sortedDates.filter(d=>{
+    const b=byDate[d];
+    const ratio=b.totalStock>0?(b.totalSold/(b.totalStock+b.totalSold)):0;
+    return ratio>0.5; // >50% of batch sold
+  }).length;
+
+  rb.innerHTML=`
+  <div class="sr" style="margin-bottom:14px">
+    <div class="sc v"><div class="sc-ico">📅</div><div class="sc-lbl">Purchase Batches</div><div class="sc-val">${datesCount}</div><div class="sc-sub">${totalItems} items parsed</div></div>
+    <div class="sc g"><div class="sc-ico">🔥</div><div class="sc-lbl">Fast-Moving Batches</div><div class="sc-val cg">${fastBatches}</div><div class="sc-sub">>50% sold</div></div>
+    <div class="sc y"><div class="sc-ico">🗓️</div><div class="sc-lbl">Latest Purchase</div><div class="sc-val" style="font-size:15px">${recentDate.split('-').reverse().join('-')}</div><div class="sc-sub">${recentDays} days ago</div></div>
+    <div class="sc r"><div class="sc-ico">📦</div><div class="sc-lbl">Items with No Date</div><div class="sc-val cr">${DB.master.length-totalItems}</div><div class="sc-sub">D.no not parsed</div></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr>
+      <th>Purchase Date</th><th>Days Ago</th><th>Parties</th><th>Items</th>
+      <th>Stock Left</th><th>Units Sold</th><th>Sell Rate</th>
+      <th>Stock Cost ₹</th><th>Status</th><th></th>
+    </tr></thead>
+    <tbody>${sortedDates.map(d=>{
+      const b=byDate[d];
+      const daysAgo=Math.floor((today-new Date(d))/(1000*60*60*24));
+      const total=b.totalStock+b.totalSold;
+      const sellRate=total>0?Math.round(b.totalSold/total*100):0;
+      const velocity=daysAgo>0?(b.totalSold/daysAgo).toFixed(1):0;
+      const status=sellRate>=70?'🔥 Fast Moving':sellRate>=30?'✅ Moving':'⚠️ Slow';
+      const statusCls=sellRate>=70?'cg':sellRate>=30?'ca':'cr';
+      const displayDate=d.split('-').reverse().join('-');
+      return`<tr onclick="repDrill('purchaseDateItems',${JSON.stringify(displayDate)},{date:'${d}'})" style="cursor:pointer" onmouseover="this.style.background='rgba(99,102,241,.06)'" onmouseout="this.style.background=''">
+        <td><strong>${displayDate}</strong></td>
+        <td style="color:var(--t2)">${daysAgo}d</td>
+        <td>${[...b.parties].map(p=>`<span class="bx bpar" style="font-size:9px">P-${p}</span>`).join(' ')}</td>
+        <td>${b.items.length}</td>
+        <td class="${b.totalStock<=0?'cr':'cg'}">${b.totalStock}</td>
+        <td class="ca">${b.totalSold}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="background:var(--bg3);border-radius:4px;height:8px;width:60px;overflow:hidden"><div style="height:100%;background:${sellRate>=70?'var(--grn)':sellRate>=30?'var(--yel)':'var(--red)'};width:${sellRate}%"></div></div>
+            <span style="font-size:11px;font-weight:700">${sellRate}%</span>
+          </div>
+          <div style="font-size:10px;color:var(--t3)">${velocity}/day</div>
+        </td>
+        <td>₹${Math.round(b.totalCost).toLocaleString()}</td>
+        <td class="${statusCls}" style="font-size:12px">${status}</td>
+        <td style="color:var(--t3);font-size:11px">→ Items</td>
+      </tr>`;
+    }).join('')}</tbody>
+    <tfoot><tr style="background:var(--bg3);font-weight:700">
+      <td colspan="4" style="padding:8px 12px">TOTALS (${sortedDates.length} batches)</td>
+      <td style="padding:8px 12px;color:var(--cg)">${sortedDates.reduce((s,d)=>s+byDate[d].totalStock,0)}</td>
+      <td style="padding:8px 12px;color:var(--acc)">${sortedDates.reduce((s,d)=>s+byDate[d].totalSold,0)}</td>
+      <td colspan="2" style="padding:8px 12px">₹${Math.round(sortedDates.reduce((s,d)=>s+byDate[d].totalCost,0)).toLocaleString()}</td>
+      <td></td><td></td>
+    </tfoot>
+  </table></div>`;
+}
+
+/* ═══════════════════════════════════════════════
+   LOGIN / PASSWORD
+═══════════════════════════════════════════════ */
+const DEFAULT_PASSWORD = 'rosylg26';
+const SESSION_KEY = 'rosySession';
+
+function getPassword(){
+  try{
+    const cfg=JSON.parse(localStorage.getItem('rosyCFG')||'{}');
+    return cfg.appPassword || DEFAULT_PASSWORD;
+  }catch(e){ return DEFAULT_PASSWORD; }
+}
+
+function tryLogin(){
+  const input=document.getElementById('loginPwd');
+  const err=document.getElementById('loginErr');
+  if(!input) return;
+  const val=input.value.trim();
+  if(!val){ err.textContent='Enter a password'; return; }
+  if(val===getPassword()){
+    // Store session (expires on tab close)
+    sessionStorage.setItem(SESSION_KEY,'1');
+    const ls=document.getElementById('loginScreen');
+    if(ls){ ls.style.opacity='0'; ls.style.transition='opacity .4s'; setTimeout(()=>ls.remove(),420); }
+    input.value='';
+    err.textContent='';
+  } else {
+    err.textContent='Incorrect password — try again';
+    input.value='';
+    input.focus();
+    input.style.borderColor='rgba(248,113,113,.8)';
+    setTimeout(()=>input.style.borderColor='rgba(255,255,255,.15)',1200);
+  }
+}
+
+function toggleLoginPwd(){
+  const inp=document.getElementById('loginPwd');
+  const btn=document.getElementById('loginEyeBtn');
+  if(!inp) return;
+  const isHidden=inp.type==='password';
+  inp.type=isHidden?'text':'password';
+  btn.textContent=isHidden?'🙈':'👁';
+}
+
+function checkSession(){
+  // If session exists, skip login
+  if(sessionStorage.getItem(SESSION_KEY)==='1'){
+    const ls=document.getElementById('loginScreen');
+    if(ls) ls.remove();
+    return;
+  }
+  // Focus password field
+  setTimeout(()=>{ const inp=document.getElementById('loginPwd'); if(inp) inp.focus(); }, 100);
+}
+
+function changePassword(){
+  const cur=document.getElementById('pwdCurrent')?.value.trim();
+  const nw =document.getElementById('pwdNew')?.value.trim();
+  const cf =document.getElementById('pwdConfirm')?.value.trim();
+  if(!cur||!nw||!cf){ toast('Fill all three fields','err'); return; }
+  if(cur!==getPassword()){ toast('Current password is incorrect','err'); return; }
+  if(nw.length<4){ toast('New password must be at least 4 characters','err'); return; }
+  if(nw!==cf){ toast('New passwords do not match','err'); return; }
+  CFG.appPassword=nw;
+  saveSettings();
+  ['pwdCurrent','pwdNew','pwdConfirm'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  toast('✅ Password updated successfully!','ok');
+}
+
 /* ─── INIT ──────────────────────────────────── */
-loadSettings();applySettings();applyDvColors();applyStoredTopbarColors();loadDB();renderDash();renderCart();
+checkSession();loadSettings();applySettings();applyDvColors();applyStoredTopbarColors();loadDB();renderDash();renderCart();
 if(DB.master.length){fillDDs();updateDInfo();}
 </script>
 </body>
