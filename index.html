@@ -312,6 +312,7 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
     <button id="globalBackBtn" onclick="goBack()" class="btn bg sm" style="display:none">← Back</button>
     <span id="PT" style="flex:1">Dashboard</span>
     <div id="topbarActs" style="display:flex;gap:7px;align-items:center"></div>
+    <button onclick="lockApp()" title="Lock App" style="background:none;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:15px;color:var(--topbar-txt,var(--t2));transition:all .18s;margin-left:4px" onmouseover="this.style.background='rgba(239,68,68,.2)';this.style.borderColor='var(--red)'" onmouseout="this.style.background='none';this.style.borderColor='rgba(255,255,255,.2)'">🔒</button>
   </div>
   <div class="content">
 
@@ -638,6 +639,10 @@ nav{flex:1;padding:6px 0;overflow-y:auto}
         <select id="oBr"  onchange="onOosBrandChange()" style="flex:1;min-width:110px"><option value="">All Brands</option></select>
         <select id="oCat" onchange="renderOOS()"         style="flex:1;min-width:110px"><option value="">All Categories</option></select>
         <button class="btn bg sm" onclick="clearOosFilters()" title="Clear all filters">✕</button>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap">
+          <input type="checkbox" id="oosShowReturns" onchange="renderOOS()" style="width:auto;accent-color:var(--red)">
+          <span style="color:var(--red)">Show Returns</span>
+        </label>
       </div>
       <div class="ri" id="oInfo"></div>
       <div class="tw">
@@ -1146,34 +1151,25 @@ function parseCode(raw){
   return{partyNo,brand,rate,costPer};
 }
 
-/* Parse Item Code (col3 in Excel) to extract purchase date.
-   Format:
-     12-digit: PP YYMMDD XXXX  (2-digit party, e.g. 182604134466 → P18, 13-04-2026)
-     11-digit: PP YYMMDD XXX   (2-digit party, e.g. 12260405040 → P12, 05-04-2026)
-     13-digit: PPP YYMMDD XXXX (3-digit party, e.g. 2452604092402 → P245, 09-04-2026)
-   Purchase Return = stock < 0 OR itemCode blank AND rawCode = "Not Found" / "0" */
-function parseItemCode(itemCode, stock, rawCode){
-  // Detect purchase return first
-  const isPurchaseReturn = (typeof stock==='number' && stock<0)
-    || (!itemCode && (!rawCode || rawCode==='Not Found' || rawCode==='0' || rawCode===0));
-
+/* Parse Item Code (col3) to extract purchase date.
+   Format: PP YYMMDD XXXX (11/12/13 digit)
+   Purchase Return detection happens AFTER import using soldSet.
+   Here we only flag definite returns (stock < 0). */
+function parseItemCode(itemCode, stock){
+  const isPurchaseReturn = (typeof stock==='number' && stock<0);
   const s = String(itemCode||'').replace(/[^0-9]/g,'');
   if(s.length<10) return {purchaseDate:'',purchaseDateISO:'',isPurchaseReturn,dateParsed:false};
-
-  // Determine party prefix length
   const offset = s.length===13 ? 3 : 2;
-  const yy = s.slice(offset,   offset+2);
-  const mm = s.slice(offset+2, offset+4);
-  const dd = s.slice(offset+4, offset+6);
-
+  const yy=s.slice(offset,offset+2), mm=s.slice(offset+2,offset+4), dd=s.slice(offset+4,offset+6);
   const year=2000+parseInt(yy), month=parseInt(mm), day=parseInt(dd);
-  if(!year || month<1||month>12 || day<1||day>31)
+  if(!year||month<1||month>12||day<1||day>31)
     return {purchaseDate:'',purchaseDateISO:'',isPurchaseReturn,dateParsed:false};
-
-  const mmP = mm.padStart(2,'0'), ddP = dd.padStart(2,'0');
-  const purchaseDateISO = `${year}-${mmP}-${ddP}`;
-  const purchaseDate    = `${ddP}-${mmP}-${year}`;
-  return {purchaseDate, purchaseDateISO, isPurchaseReturn, dateParsed:true};
+  const mmP=mm.padStart(2,'0'), ddP=dd.padStart(2,'0');
+  return {
+    purchaseDate:   `${ddP}-${mmP}-${year}`,
+    purchaseDateISO:`${year}-${mmP}-${ddP}`,
+    isPurchaseReturn, dateParsed:true
+  };
 }
 
 
@@ -1207,7 +1203,7 @@ function doImport(file){
       const _itemCode=String(r[3]||'').trim();   // col3 = Item code (contains date)
       const _rawCode=String(r[16]||'').trim();    // col16 = Code (party-brand-rate)
       const _dno=String(r[15]||'').trim();        // col15 = D.no (sequential number)
-      const _dp=parseItemCode(_itemCode,_stk,_rawCode);
+      const _dp=parseItemCode(_itemCode,_stk);
       master.push({itemName:nm,description:String(r[1]||''),category:String(r[2]||'Uncategorized').trim(),itemCode:_itemCode,salePrice:+r[6]||0,buyPrice:+r[8]||0,mrp:+r[10]||0,stock:_stk,lowAlert:+r[12]||0.5,dno:_dno,rawCode:_rawCode,article:pn.article,color:pn.color,size:pn.size,partyNo:pc.partyNo,brand:pc.brand,rate:pc.rate,costPer:pc.costPer,purchaseDate:_dp.purchaseDate,purchaseDateISO:_dp.purchaseDateISO,isPurchaseReturn:_dp.isPurchaseReturn,dateParsed:_dp.dateParsed});
       }
       // out of stock
@@ -1220,8 +1216,20 @@ function doImport(file){
       const sSheet=wb.Sheets['unit sold']||(wb.SheetNames[2]?wb.Sheets[wb.SheetNames[2]]:{});
       const sRaw=sSheet?XLSX.utils.sheet_to_json(sSheet,{header:1,defval:''}):[]; 
       const sold=[];for(let i=1;i<sRaw.length;i++){const r=sRaw[i];if(!r[0])continue;sold.push({itemName:String(r[0]).trim(),salesQty:+r[2]||0});}
-      pf.style.width='100%';st.textContent='✅ Done!';
-      DB.master=master;DB.oos=oos;DB.sold=sold;DB.lastImport=new Date().toISOString();
+      DB.master=master;DB.oos=oos;DB.sold=sold;
+      // STRICT PURCHASE RETURN DETECTION:
+      // Rule: stock <= 0 AND item NOT in 'unit sold' sheet = PURCHASE RETURN
+      // Rule: stock < 0 (negative) = PURCHASE RETURN
+      // Rule: stock <= 0 AND item IS in sold sheet = sold out normally (NOT a return)
+      const _soldNameSet=new Set(DB.sold.map(s=>s.itemName));
+      let _retCount=0;
+      DB.master.forEach(item=>{
+        const inSold=_soldNameSet.has(item.itemName);
+        item.isPurchaseReturn=(item.stock<0)||(item.stock===0 && !inSold);
+        if(item.isPurchaseReturn) _retCount++;
+      });
+      pf.style.width='100%';st.textContent='\u2705 Done! ('+_retCount+' purchase returns detected)';
+      DB.lastImport=new Date().toISOString();
       saveDB();
       document.getElementById('impRes').innerHTML=`<div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-radius:9px;padding:13px;font-size:13px;line-height:1.8;margin-top:9px">✅ <strong>Import OK!</strong><br>📦 ${master.length.toLocaleString()} products · ⚠️ ${oos.length.toLocaleString()} OOS · 💰 ${sold.length.toLocaleString()} sold records</div>`;
       refreshAll();toast(`Imported ${master.length.toLocaleString()} products ✓`,'ok');
@@ -2101,8 +2109,10 @@ function renderBrandDetailView(){
 /* ─── OOS ───────────────────────────────────── */
 function renderOOS(){
   const q=gv('oQ').toLowerCase(),cat=gv('oCat'),br=gv('oBr'),par=gv('oPar');
+  const showReturns=document.getElementById('oosShowReturns')?.checked||false;
   const items=DB.master.filter(i=>{
-    if(i.stock>0&&!i.isPurchaseReturn)return false;
+    if(i.stock>0) return false;  // only zero/negative stock
+    if(i.isPurchaseReturn && !showReturns) return false; // hide returns by default
     if(q&&!i.itemName.toLowerCase().includes(q)&&!i.dno.includes(q)&&!i.article.toLowerCase().includes(q)&&!i.brand.toLowerCase().includes(q))return false;
     if(cat&&i.category!==cat)return false;if(br&&i.brand!==br)return false;if(par&&i.partyNo!==par)return false;
     return true;
@@ -4680,6 +4690,32 @@ function getPassword(){
     const cfg=JSON.parse(localStorage.getItem('rosyCFG')||'{}');
     return cfg.appPassword || DEFAULT_PASSWORD;
   }catch(e){ return DEFAULT_PASSWORD; }
+}
+
+function lockApp(){
+  sessionStorage.removeItem('rosySession');
+  // Show login screen again
+  const existing = document.getElementById('loginScreen');
+  if(existing){ existing.style.opacity='1'; existing.style.display='flex'; return; }
+  const ls = document.createElement('div');
+  ls.id = 'loginScreen';
+  ls.style.cssText = 'position:fixed;inset:0;background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#0f0a1e 100%);z-index:9999;display:flex;align-items:center;justify-content:center';
+  ls.innerHTML = `<div style="background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:40px 36px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+    <div style="font-size:48px;margin-bottom:8px">🔒</div>
+    <div style="font-size:22px;font-weight:800;color:#fff;letter-spacing:1px;margin-bottom:4px">ROSY</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:30px;letter-spacing:2px;text-transform:uppercase">App Locked</div>
+    <div style="position:relative;margin-bottom:16px">
+      <input id="loginPwd" type="password" placeholder="Enter password to unlock…" autocomplete="current-password"
+        style="width:100%;box-sizing:border-box;padding:13px 44px 13px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-family:inherit;outline:none"
+        onkeydown="if(event.key==='Enter')tryLogin()">
+      <button onclick="toggleLoginPwd()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:16px" id="loginEyeBtn">👁</button>
+    </div>
+    <div id="loginErr" style="color:#f87171;font-size:12px;margin-bottom:12px;min-height:18px"></div>
+    <button onclick="tryLogin()" style="width:100%;padding:13px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px"
+      onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Unlock →</button>
+  </div>`;
+  document.body.appendChild(ls);
+  setTimeout(()=>{ const inp=ls.querySelector('#loginPwd'); if(inp) inp.focus(); }, 100);
 }
 
 function tryLogin(){
